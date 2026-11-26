@@ -1,0 +1,12 @@
+sensor_feature,spearman_r,spearman_raw_p,pearson_r,n_samples,fdr_q_value,is_significant_fdr_0.05
+combine_max_speed,0.0973,0.2376354605316269,0.0817,149,0.86083,False
+combine_mean_speed_preservation_ratio,0.0768,0.3517437425022625,0.0305,149,0.86083,False
+combine_mean_cod_apex_speed,0.066,0.42353853710237166,0.0567,149,0.86083,False
+combine_max_decel,0.0656,0.4267381720528623,0.024,149,0.86083,False
+combine_mean_speed,0.0655,0.42706851568324744,0.0424,149,0.86083,False
+combine_peak_angular_velocity,0.0589,0.47526638080481115,0.0401,149,0.86083,False
+combine_mean_turning_efficiency,0.0496,0.5478016929826885,0.035,149,0.86083,False
+combine_mean_pos_jerk,-0.0221,0.7889584607743827,0.0079,149,0.92423,False
+combine_burst_latency_mean,-0.0137,0.8682000125162893,0.0168,149,0.92423,False
+forty_curve_tau,0.0136,0.8777655228876904,-0.0166,130,0.92423,False
+combine_initial_accel_mean,0.0079,0.924227271082666,0.0161,149,0.92423,False

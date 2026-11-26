@@ -168,17 +168,27 @@ pip install -r requirements.txt
 ### 2. Dataset Acquisition
 Follow the step-by-step instructions in [DATASET_GUIDE.md](DATASET_GUIDE.md) to place official competition files into `data/raw/`.
 
-### 3. Verify Setup
-Run dataset verification:
-```python
-from src.data.loader import DataLoader
-loader = DataLoader()
-status = loader.check_dataset_availability()
-print(status)
+### 3. Launch Interactive Analytics Platform
+Run the production Streamlit research platform:
+```bash
+streamlit run src/dashboard/app.py
+```
+
+### 4. Run Automated Test Suite
+Verify all unit tests, sprint models, and UI components:
+```bash
+python -m pytest tests/ -v
 ```
 
 ---
 
-## 📚 Documentation Links
-* [DATASET_GUIDE.md](DATASET_GUIDE.md) — Comprehensive schema, column dictionary, and download instructions.
-* [RESEARCH_METHODOLOGY.md](RESEARCH_METHODOLOGY.md) — Mathematical formulations, kinematic derivations, and validation design.
+## 📚 Official Research & Submission Documentation
+* **Research Paper:** [reports/final_research_paper.md](reports/final_research_paper.md) — Comprehensive academic competition submission paper.
+* **Executive Summary:** [reports/executive_summary.md](reports/executive_summary.md) — Strategic takeaways for NFL front offices and analytics directors.
+* **Technical Methodology:** [reports/technical_methodology.md](reports/technical_methodology.md) — Mathematical derivations, nested CV, and bootstrap formulation.
+* **Reproducibility Guide:** [reports/reproducibility_guide.md](reports/reproducibility_guide.md) — Complete environment and reproduction instructions.
+* **Scientific Limitations:** [reports/limitations_and_future_work.md](reports/limitations_and_future_work.md) — Explicit boundary conditions and future directions.
+* **Phase 4 Data Mapping:** [reports/phase4_data_mapping.md](reports/phase4_data_mapping.md) — Data traceability matrix.
+* **Dashboard Validation Report:** [reports/phase4_dashboard_validation.md](reports/phase4_dashboard_validation.md) — Test checklist and performance audit.
+* **Phase 3.1 Statistical Audit:** [reports/phase3_1_audit/statistical_audit_report.md](reports/phase3_1_audit/statistical_audit_report.md) — Independent statistical audit verdicts.
+* **Dataset Guide:** [DATASET_GUIDE.md](DATASET_GUIDE.md) — Raw competition dataset documentation.
