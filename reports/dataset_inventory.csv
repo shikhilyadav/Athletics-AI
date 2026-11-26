@@ -1,0 +1,10 @@
+filename,status,size_mb,row_count,column_count,player_id_col,game_id_col,play_id_col,timestamp_col,movement_vars,quality_flags
+combine_tracking.csv,MISSING,0.0,0,0,None,None,None,None,None,FILE_NOT_FOUND_ON_DISK
+combine_results.csv,MISSING,0.0,0,0,None,None,None,None,None,FILE_NOT_FOUND_ON_DISK
+game_tracking_2023.csv,MISSING,0.0,0,0,None,None,None,None,None,FILE_NOT_FOUND_ON_DISK
+game_tracking_2024.csv,MISSING,0.0,0,0,None,None,None,None,None,FILE_NOT_FOUND_ON_DISK
+game_tracking_2025.csv,MISSING,0.0,0,0,None,None,None,None,None,FILE_NOT_FOUND_ON_DISK
+player_play.csv,MISSING,0.0,0,0,None,None,None,None,None,FILE_NOT_FOUND_ON_DISK
+player_career_successes.csv,MISSING,0.0,0,0,None,None,None,None,None,FILE_NOT_FOUND_ON_DISK
+players.csv,MISSING,0.0,0,0,None,None,None,None,None,FILE_NOT_FOUND_ON_DISK
+games.csv,MISSING,0.0,0,0,None,None,None,None,None,FILE_NOT_FOUND_ON_DISK

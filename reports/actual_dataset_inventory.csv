@@ -1,0 +1,8 @@
+filename,file_size_mb,row_count,col_count,player_id_col,unique_players,null_representation,drill_opt_out_rate_pct,duplicates,description
+combine_results.csv,0.04,510,18,nfl_id,510,Literal string 'NA',"3-Cone: 64.7%, Shuttle: 60.6%, Bench: 62.4%, 40yd: 16.9%",0,"Pre-draft Combine anthropometrics, traditional stopwatch times, jumps, and NGS scores"
+combine_tracking.csv,79.91,463189,14,nfl_id,510,Clean (0 nulls),0.0% (All 510 prospects tracked),0,"10 Hz Combine sensor tracking across 56 drills (431,094 player frames, 32,095 ball frames)"
+games.csv,0.04,1002,7,None (game_id key),N/A,Clean (0 nulls),N/A,0,"Game schedules across 2023, 2024, and 2025 seasons (334 games per season)"
+game_tracking_2023.csv,319.92,3665443,12,nfl_id,156,Clean (0 nulls),N/A,0,10 Hz regular-season player tracking for 2023 rookies (156 of 160 active in games)
+players.csv,0.05,510,10,nfl_id,510,Literal string 'NA' in draft picks for 127 UDFAs,N/A,0,"Biographical master roster (Draft classes: 2023: 160, 2024: 177, 2025: 173; 127 UDFAs)"
+player_career_successes.csv,0.01,510,9,nfl_id,510,Clean (0 nulls),N/A,0,"Ground-truth career outcomes (games active, starts, snaps, All-Pro, Pro Bowl)"
+player_play.csv,140.07,314197,64,nfl_id,497,Context-dependent nulls (e.g. separation only on pass plays),N/A,0,"Situational player metrics per play across 1,001 games (separation, get-off, pressure)"
