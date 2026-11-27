@@ -109,18 +109,24 @@ def test_metric_formatters():
 
 def test_components_markup():
     """Verify reusable UI components generate expected HTML strings without error."""
-    kpi_html = render_kpi_card_v2("Test Label", "149", "Active Cohort", highlight_lime=True)
-    assert "kpi-card-v2" in kpi_html
-    assert "149" in kpi_html
-    assert "#B8E64B" in kpi_html
+    kpi_html = render_kpi_card_v2("Combine Prospects", "510", "Active Cohort", highlight_lime=True)
+    assert "kpi-dark-card" in kpi_html
+    assert "510" in kpi_html
 
-    kpi_alias = render_kpi_card("Test Label", "149")
-    assert "kpi-card-v2" in kpi_alias
+    kpi_alias = render_kpi_card("In-Game Tracked", "156")
+    assert "kpi-dark-card" in kpi_alias
+    assert "156" in kpi_alias
 
     metric_html = render_metric_card("Peak Acceleration", "4.85", "yd/s²", badge_text="TOP 5%", badge_color="lime")
-    assert "metric-card-box" in metric_html
     assert "4.85" in metric_html
     assert "TOP 5%" in metric_html
+
+    from src.dashboard.components import render_segmented_bar, render_dark_ai_card
+    bar_html = render_segmented_bar("Sprint Burst", 94, "lime", "Peak")
+    assert "94%" in bar_html
+
+    ai_html = render_dark_ai_card("Test Insight", "Test recommendation", ["Bullet 1"])
+    assert "Test Insight" in ai_html
 
 
 def test_charts_generation():
@@ -189,6 +195,19 @@ def test_charts_generation():
     fig15 = plot_biomechanical_profile_radar(p1, master_df)
     assert fig15 is not None
 
+    from src.dashboard.charts import plot_hero_lime_trend, plot_recent_form_spline, plot_cohort_performance_trend, plot_3d_motion_analysis
+    fig16 = plot_hero_lime_trend(master_df)
+    assert fig16 is not None
+
+    fig17 = plot_recent_form_spline(master_df)
+    assert fig17 is not None
+
+    fig18 = plot_cohort_performance_trend()
+    assert fig18 is not None
+
+    fig19 = plot_3d_motion_analysis()
+    assert fig19 is not None
+
 
 def test_views_import():
     """Verify all views import properly without dependency errors."""
@@ -198,6 +217,7 @@ def test_views_import():
         model_performance,
         athletic_alpha,
         biomechanical_lab,
+        comparison_studio,
         methodology,
     )
     assert overview is not None
@@ -205,20 +225,22 @@ def test_views_import():
     assert model_performance is not None
     assert athletic_alpha is not None
     assert biomechanical_lab is not None
+    assert comparison_studio is not None
     assert methodology is not None
 
 
 def test_apptest_navigation():
-    """Verify Streamlit AppTest runs all 6 Phase 1 pages with zero exceptions."""
+    """Verify Streamlit AppTest runs all 7 dark sports intelligence pages with zero exceptions."""
     from streamlit.testing.v1 import AppTest
 
     pages = [
-        "1. Research Overview",
-        "2. Prospect Explorer",
-        "3. Model Performance",
-        "4. Athletic Alpha",
-        "5. Biomechanical Lab",
-        "6. Research Methodology",
+        "🏠  Research Overview",
+        "🔍  Prospect Explorer",
+        "📚  Model Performance",
+        "📈  Athletic Alpha",
+        "🏃  Biomechanical Lab",
+        "👥  Player Comparison",
+        "📖  Research Methodology",
     ]
 
     app_path = (ROOT / "src" / "dashboard" / "app.py").resolve()

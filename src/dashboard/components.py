@@ -1,43 +1,45 @@
 """
-ATHLETIX AI — Premium Sports Analytics Design System & Component Library
-Phase 1 Design Foundation:
-Minimalist light grey (#ECEFEC), large rounded white cards (#FFFFFF), electric lime (#C8F45A),
-deep graphite black (#171917), black pill controls, and editorial typography.
+ATHLETIX AI — Premium Dark Sports Performance Intelligence Design System
+Faithful implementation of the NFL Movement Intelligence visual reference:
+Deep charcoal black (#0B0E11), graphite surfaces (#161B22), neon lime highlights (#C8F45A),
+crisp white typography (#FFFFFF), stadium-inspired visuals, and modern sidebar navigation.
 """
 
 import streamlit as st
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
 
 def inject_custom_css():
-    """Inject the complete premium sports analytics design system into Streamlit."""
+    """Inject the complete premium dark sports intelligence design system into Streamlit."""
     st.markdown(
         """
         <style>
         /* Import Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono */
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
         /* Design System Variables */
         :root {
-            --bg-app: #ECEFEC;
-            --card-bg: #FFFFFF;
-            --card-dark: #171917;
+            --bg-app: #0B0E11;
+            --bg-sidebar: #0B0E11;
+            --card-bg: #161B22;
+            --card-bg-elevated: #1B222D;
+            --card-border: #242D38;
+            --card-border-highlight: #C8F45A;
             --accent-lime: #C8F45A;
-            --accent-lime-hover: #b8e64b;
-            --accent-lime-dark: #8CCB42;
-            --text-primary: #171917;
-            --text-secondary: #858B86;
-            --text-muted: #A3A8A4;
-            --border-light: #E5E7E5;
-            --border-subtle: #EEEEEE;
-            --card-radius: 22px;
+            --accent-lime-hover: #D6F972;
+            --accent-lime-dim: rgba(200, 244, 90, 0.15);
+            --accent-lime-glow: rgba(200, 244, 90, 0.25);
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --card-radius: 18px;
             --pill-radius: 9999px;
-            --shadow-card: 0 4px 20px -2px rgba(23, 25, 23, 0.04), 0 2px 6px -1px rgba(23, 25, 23, 0.02);
-            --shadow-elevated: 0 12px 32px -4px rgba(23, 25, 23, 0.08);
+            --shadow-card: 0 8px 24px -2px rgba(0, 0, 0, 0.45);
+            --shadow-glow: 0 0 20px rgba(200, 244, 90, 0.20);
         }
 
         /* App Background & Base Typography */
-        html, body, [data-testid="stAppViewContainer"] {
+        html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
             background-color: var(--bg-app) !important;
             font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text-primary);
@@ -45,14 +47,14 @@ def inject_custom_css():
 
         /* Main content container */
         .main .block-container {
-            max-width: 1400px;
-            padding-top: 1.2rem;
+            max-width: 1480px;
+            padding-top: 1.0rem;
             padding-bottom: 3.5rem;
-            padding-left: 2.2rem;
-            padding-right: 2.2rem;
+            padding-left: 2.0rem;
+            padding-right: 2.0rem;
         }
 
-        /* Completely remove default Streamlit header, footer, multipage nav */
+        /* Remove default Streamlit header, footer, multipage nav */
         #MainMenu, footer, header {
             visibility: hidden !important;
             display: none !important;
@@ -69,12 +71,15 @@ def inject_custom_css():
             overflow: hidden !important;
         }
 
-        /* Sidebar Styling */
+        /* Sidebar Styling (Deep Charcoal Black) */
         section[data-testid="stSidebar"] {
-            background-color: #FFFFFF !important;
-            border-right: 1px solid var(--border-light) !important;
-            box-shadow: 2px 0 12px rgba(0,0,0,0.02) !important;
-            width: 290px !important;
+            background-color: var(--bg-sidebar) !important;
+            border-right: 1px solid var(--card-border) !important;
+            width: 280px !important;
+        }
+
+        section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] {
+            gap: 0.6rem !important;
         }
 
         /* Radio Navigation in Sidebar */
@@ -84,8 +89,8 @@ def inject_custom_css():
 
         div[data-testid="stRadio"] label {
             background-color: transparent !important;
-            border-radius: var(--pill-radius) !important;
-            padding: 10px 16px !important;
+            border-radius: 12px !important;
+            padding: 10px 14px !important;
             margin: 0 !important;
             font-size: 0.90rem !important;
             font-weight: 600 !important;
@@ -96,16 +101,16 @@ def inject_custom_css():
         }
 
         div[data-testid="stRadio"] label:hover {
-            background-color: #F5F7F5 !important;
-            color: var(--text-primary) !important;
+            background-color: #141A22 !important;
+            color: #FFFFFF !important;
         }
 
         div[data-testid="stRadio"] label[data-checked="true"],
         div[data-testid="stRadio"] label:has(input:checked) {
             background-color: var(--accent-lime) !important;
-            color: var(--text-primary) !important;
-            font-weight: 700 !important;
-            box-shadow: 0 2px 8px rgba(200, 244, 90, 0.35) !important;
+            color: #0B0E11 !important;
+            font-weight: 800 !important;
+            box-shadow: 0 2px 14px rgba(200, 244, 90, 0.35) !important;
         }
 
         /* Hide radio circle dots for modern pill button look */
@@ -114,274 +119,182 @@ def inject_custom_css():
         }
 
         /* Top Bar Container */
-        .top-bar-container {
+        .top-bar-dark {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: var(--card-radius);
-            padding: 0.85rem 1.6rem;
             margin-bottom: 1.8rem;
-            box-shadow: var(--shadow-card);
+            gap: 16px;
         }
 
-        .top-bar-brand {
+        .search-box-container {
+            display: flex;
+            align-items: center;
+            background: #161B22;
+            border: 1px solid var(--card-border);
+            border-radius: var(--pill-radius);
+            padding: 8px 18px;
+            width: 440px;
+            gap: 10px;
+        }
+
+        .search-box-icon {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .search-box-text {
+            color: var(--text-muted);
+            font-size: 0.86rem;
+            font-weight: 500;
+            flex-grow: 1;
+        }
+
+        .search-kbd-badge {
+            background: #242D38;
+            color: var(--text-secondary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid #333D4B;
+        }
+
+        .top-bar-controls {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .top-bar-logo-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background-color: var(--accent-lime);
+        .cohort-dropdown-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #161B22;
+            border: 1px solid var(--card-border);
+            border-radius: var(--pill-radius);
+            padding: 8px 16px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .icon-circle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #161B22;
+            border: 1px solid var(--card-border);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-
-        .top-bar-brand-title {
-            font-size: 1.25rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: var(--text-primary);
-            line-height: 1;
-        }
-
-        .top-bar-brand-sub {
-            font-size: 0.72rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-
-        .top-bar-pills {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .top-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: var(--pill-radius);
-            font-size: 0.78rem;
-            font-weight: 600;
-            background-color: #F5F7F5;
-            color: var(--text-primary);
-            border: 1px solid var(--border-light);
-        }
-
-        .top-pill-lime {
-            background-color: var(--accent-lime);
-            color: var(--text-primary);
-            border-color: #b5e446;
-        }
-
-        .top-pill-dark {
-            background-color: var(--card-dark);
             color: #FFFFFF;
-            border-color: #2a2d2a;
+            font-size: 1.05rem;
+            position: relative;
         }
 
-        /* Large Editorial Page Header */
-        .editorial-header {
-            margin-bottom: 2rem;
-        }
-
-        .editorial-title {
-            font-size: 2.35rem;
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            color: var(--text-primary);
-            margin: 0;
-            line-height: 1.15;
-        }
-
-        .editorial-subtitle {
-            font-size: 1.02rem;
-            font-weight: 400;
-            color: var(--text-secondary);
-            margin-top: 0.4rem;
-            margin-bottom: 0;
-        }
-
-        /* Section Headers */
-        .section-header-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 1.8rem;
-            margin-bottom: 1.1rem;
-        }
-
-        .section-header-title {
-            font-size: 1.28rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            margin: 0;
-        }
-
-        .section-header-subtitle {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 2px;
+        .notification-dot {
+            position: absolute;
+            top: 9px;
+            right: 9px;
+            width: 7px;
+            height: 7px;
+            background-color: var(--accent-lime);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--accent-lime);
         }
 
         /* Card Containers */
-        .athletix-card {
+        .athletix-card, .dark-card {
             background-color: var(--card-bg);
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--card-border);
             border-radius: var(--card-radius);
-            padding: 1.6rem 1.8rem;
+            padding: 1.4rem 1.6rem;
             box-shadow: var(--shadow-card);
-            margin-bottom: 1.5rem;
-        }
-
-        .athletix-card-dark {
-            background-color: var(--card-dark);
-            border: 1px solid #282B28;
-            border-radius: var(--card-radius);
-            padding: 1.8rem 2rem;
-            color: #FFFFFF;
-            box-shadow: var(--shadow-elevated);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.3rem;
             position: relative;
-            overflow: hidden;
         }
 
-        .athletix-card-lime {
-            background-color: var(--accent-lime);
-            border: 1px solid #B8E64B;
-            border-radius: var(--card-radius);
-            padding: 1.8rem 2rem;
-            color: var(--text-primary);
-            box-shadow: 0 8px 24px -4px rgba(200, 244, 90, 0.4);
-            margin-bottom: 1.5rem;
+        .dark-card-highlight {
+            background: linear-gradient(135deg, rgba(200, 244, 90, 0.08) 0%, rgba(22, 27, 34, 0.95) 100%) !important;
+            border: 1px solid var(--accent-lime) !important;
+            box-shadow: var(--shadow-glow) !important;
         }
 
-        /* Chart Wrapper */
-        .chart-container-box {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: var(--card-radius);
-            padding: 1.5rem 1.6rem;
-            box-shadow: var(--shadow-card);
-            margin-bottom: 1.5rem;
-        }
-
-        .chart-header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .chart-title-text {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.01em;
-        }
-
-        .chart-caption-text {
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-
-        /* Modern KPI Cards */
-        .kpi-grid {
+        /* KPI Cards Grid */
+        .kpi-dark-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 14px;
             margin-bottom: 1.6rem;
         }
 
-        .kpi-card-v2 {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: 18px;
-            padding: 1.25rem 1.4rem;
+        @media (max-width: 1200px) {
+            .kpi-dark-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kpi-dark-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .kpi-dark-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.1rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 14px;
             box-shadow: var(--shadow-card);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            transition: all 0.2s ease;
         }
 
-        .kpi-card-v2:hover {
+        .kpi-dark-card:hover {
+            border-color: #384556;
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px -2px rgba(23, 25, 23, 0.06);
         }
 
-        .kpi-label-v2 {
-            font-size: 0.74rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-secondary);
-            margin-bottom: 0.4rem;
+        .kpi-dark-card-active {
+            background: linear-gradient(135deg, rgba(200, 244, 90, 0.14) 0%, rgba(22, 27, 34, 0.95) 100%);
+            border: 1.5px solid var(--accent-lime);
+            box-shadow: 0 0 18px rgba(200, 244, 90, 0.20);
         }
 
-        .kpi-value-v2 {
-            font-size: 1.95rem;
+        .kpi-dark-icon-wrap {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #1F2732;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: #FFFFFF;
+            flex-shrink: 0;
+        }
+
+        .kpi-dark-icon-wrap-lime {
+            background: var(--accent-lime);
+            color: #0B0E11;
+        }
+
+        .kpi-dark-num {
+            font-size: 1.7rem;
             font-weight: 800;
-            letter-spacing: -0.04em;
-            color: var(--text-primary);
+            color: #FFFFFF;
+            letter-spacing: -0.03em;
             line-height: 1.1;
         }
 
-        .kpi-subtext-v2 {
-            font-size: 0.76rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-top: 0.45rem;
-        }
-
-        /* Metric Card (Compact) */
-        .metric-card-box {
-            background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: 16px;
-            padding: 1rem 1.2rem;
-            box-shadow: var(--shadow-card);
-        }
-
-        .metric-card-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 0.4rem;
-        }
-
-        .metric-card-title {
-            font-size: 0.76rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-secondary);
-        }
-
-        .metric-card-value {
-            font-size: 1.65rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            letter-spacing: -0.03em;
-        }
-
-        .metric-card-unit {
-            font-size: 0.85rem;
+        .kpi-dark-label {
+            font-size: 0.74rem;
             font-weight: 600;
             color: var(--text-secondary);
-            margin-left: 4px;
+            margin-top: 2px;
         }
 
         /* Pill Buttons & Badges */
@@ -391,103 +304,312 @@ def inject_custom_css():
             gap: 5px;
             padding: 4px 12px;
             border-radius: var(--pill-radius);
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 700;
             letter-spacing: 0.02em;
         }
 
         .pill-badge-lime {
             background-color: var(--accent-lime);
-            color: var(--text-primary);
+            color: #0B0E11;
         }
 
         .pill-badge-dark {
-            background-color: var(--card-dark);
+            background-color: #1F2732;
             color: #FFFFFF;
+            border: 1px solid var(--card-border);
         }
 
         .pill-badge-grey {
-            background-color: #ECEFEC;
+            background-color: #242D38;
             color: var(--text-secondary);
         }
 
-        .pill-badge-red {
-            background-color: #FFEAE8;
-            color: #D32F2F;
-        }
-
-        /* Status Indicator */
-        .status-pill {
+        /* Bottom Feature Cards with Background Graphics */
+        .hero-cta-lime {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
+            gap: 8px;
+            background: var(--accent-lime);
+            color: #0B0E11 !important;
+            font-weight: 800;
+            font-size: 0.88rem;
+            padding: 10px 22px;
             border-radius: var(--pill-radius);
-            font-size: 0.75rem;
-            font-weight: 600;
-            background: #F5F7F5;
-            border: 1px solid var(--border-light);
-            color: var(--text-primary);
+            text-decoration: none;
+            box-shadow: 0 4px 16px rgba(200, 244, 90, 0.35);
+            transition: all 0.2s ease;
         }
 
-        .status-dot-active {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #8CCB42;
-            box-shadow: 0 0 6px #8CCB42;
+        .hero-cta-lime:hover {
+            background: var(--accent-lime-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200, 244, 90, 0.45);
         }
 
-        .status-dot-inactive {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #A3A8A4;
-        }
-
-        /* Empty State */
-        .empty-state-box {
-            text-align: center;
-            padding: 3rem 2rem;
-            background: #FFFFFF;
-            border: 1px dashed var(--border-light);
-            border-radius: var(--card-radius);
-            margin: 1.5rem 0;
-        }
-
-        .empty-state-icon {
-            font-size: 2.4rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .empty-state-title {
-            font-size: 1.1rem;
+        .hero-cta-dark {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1F2732;
+            color: #FFFFFF !important;
             font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.3rem;
+            font-size: 0.88rem;
+            padding: 10px 22px;
+            border-radius: var(--pill-radius);
+            border: 1px solid var(--card-border);
+            text-decoration: none;
+            transition: all 0.2s ease;
         }
 
-        .empty-state-msg {
-            font-size: 0.86rem;
+        .hero-cta-dark:hover {
+            background: #283340;
+            color: var(--accent-lime) !important;
+            border-color: #3B4758;
+        }
+
+        /* Movement Intelligence Right Widget */
+        .movement-intel-card {
+            background: #161B22;
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 1.15rem 1.35rem;
+            width: 255px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .movement-intel-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .movement-intel-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: #11151A;
+            margin-bottom: 6px;
+            border: 1px solid #1C232B;
+            transition: all 0.15s ease;
+        }
+
+        .movement-intel-item:hover {
+            border-color: var(--accent-lime);
+            background: #141A22;
+        }
+
+        .movement-intel-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(200, 244, 90, 0.12);
+            color: var(--accent-lime);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.90rem;
+        }
+
+        .movement-intel-text {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #E2E8F0;
+        }
+
+        /* Biomechanical Prospect Card Layout */
+        .bio-prospect-card {
+            background: #161B22;
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 1.3rem;
+            box-shadow: var(--shadow-card);
+        }
+
+        .bio-prospect-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1.1rem;
+            padding-bottom: 0.9rem;
+            border-bottom: 1px solid #242D38;
+        }
+
+        .bio-avatar-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #242D38 0%, #161B22 100%);
+            border: 2px solid var(--accent-lime);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: 0 0 12px rgba(200, 244, 90, 0.25);
+            flex-shrink: 0;
+        }
+
+        .bio-prospect-name {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1.2;
+        }
+
+        .bio-prospect-meta {
+            font-size: 0.76rem;
             color: var(--text-secondary);
-            max-width: 400px;
-            margin: 0 auto;
+            margin-top: 2px;
         }
 
-        /* Scientific Disclaimer Banner */
+        .bio-kpi-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(36, 45, 56, 0.6);
+            font-size: 0.82rem;
+        }
+
+        .bio-kpi-row:last-child {
+            border-bottom: none;
+        }
+
+        .bio-kpi-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .bio-kpi-val {
+            color: #FFFFFF;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .feature-card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 1.4rem;
+        }
+
+        @media (max-width: 900px) {
+            .feature-card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-hero-card {
+            background: #161B22;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 1.5rem 1.6rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s ease;
+        }
+
+        .feature-hero-card:hover {
+            border-color: var(--accent-lime);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(200, 244, 90, 0.15);
+        }
+
+        .feature-card-bg-overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.22;
+            pointer-events: none;
+        }
+
+        .feature-card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card-icon-pill {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: var(--accent-lime);
+            color: #0B0E11;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .feature-card-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0.35rem;
+        }
+
+        .feature-card-title {
+            font-size: 1.18rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.02em;
+        }
+
+        .feature-card-desc {
+            font-size: 0.84rem;
+            color: var(--text-secondary);
+            line-height: 1.45;
+            max-width: 90%;
+        }
+
+        .feature-card-arrow-btn {
+            position: absolute;
+            bottom: 1.4rem;
+            right: 1.4rem;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            color: #0B0E11;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+
+        /* Scientific Banner (Dark Mode) */
         .scientific-banner {
-            background-color: #FFFFFF;
-            border-left: 5px solid var(--text-primary);
+            background-color: #161B22;
+            border-left: 4px solid var(--accent-lime);
+            border-top: 1px solid var(--card-border);
+            border-right: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
             border-radius: 14px;
             padding: 1.1rem 1.4rem;
             margin: 1.4rem 0;
             box-shadow: var(--shadow-card);
             font-size: 0.88rem;
-            color: var(--text-primary);
+            color: #FFFFFF;
             line-height: 1.55;
         }
 
-        /* Streamlit Tabs Customization */
+        /* Streamlit Tabs Customization (Dark Mode) */
         div[data-testid="stTabs"] button[role="tab"] {
             font-size: 0.88rem !important;
             font-weight: 600 !important;
@@ -501,47 +623,45 @@ def inject_custom_css():
         }
 
         div[data-testid="stTabs"] button[role="tab"]:hover {
-            color: var(--text-primary) !important;
-            background-color: #FFFFFF !important;
+            color: #FFFFFF !important;
+            background-color: #1A222C !important;
         }
 
         div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
-            background-color: var(--card-dark) !important;
-            color: #FFFFFF !important;
-            border: 1px solid var(--card-dark) !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+            background-color: var(--accent-lime) !important;
+            color: #0B0E11 !important;
+            font-weight: 800 !important;
+            border: 1px solid var(--accent-lime) !important;
+            box-shadow: 0 2px 10px rgba(200, 244, 90, 0.3) !important;
         }
 
-        div[data-testid="stTabs"] div[data-baseweb="tab-highlight"] {
-            display: none !important;
-        }
-
+        div[data-testid="stTabs"] div[data-baseweb="tab-highlight"],
         div[data-testid="stTabs"] div[data-baseweb="tab-border"] {
             display: none !important;
         }
 
-        /* Dataframe styling */
-        div[data-testid="stDataFrame"] {
-            border: 1px solid var(--border-light) !important;
-            border-radius: 16px !important;
-            overflow: hidden !important;
-            background: #FFFFFF !important;
-            box-shadow: var(--shadow-card) !important;
-        }
-
-        /* Inputs and Selectbox styling */
+        /* Streamlit Inputs & Selectboxes Dark Styling */
         div[data-testid="stTextInput"] input,
         div[data-testid="stSelectbox"] > div {
             border-radius: 12px !important;
-            border: 1px solid var(--border-light) !important;
-            background-color: #FFFFFF !important;
+            border: 1px solid var(--card-border) !important;
+            background-color: #161B22 !important;
             font-size: 0.88rem !important;
-            color: var(--text-primary) !important;
+            color: #FFFFFF !important;
         }
 
         div[data-testid="stTextInput"] input:focus {
-            border-color: var(--accent-lime-dark) !important;
-            box-shadow: 0 0 0 2px rgba(200, 244, 90, 0.4) !important;
+            border-color: var(--accent-lime) !important;
+            box-shadow: 0 0 0 2px rgba(200, 244, 90, 0.25) !important;
+        }
+
+        /* Dataframe styling in Dark Mode */
+        div[data-testid="stDataFrame"] {
+            border: 1px solid var(--card-border) !important;
+            border-radius: 14px !important;
+            overflow: hidden !important;
+            background: #161B22 !important;
+            box-shadow: var(--shadow-card) !important;
         }
         </style>
         """,
@@ -549,23 +669,70 @@ def inject_custom_css():
     )
 
 
-def render_top_bar(active_cohort: str = "149 Scrimmage Cohort"):
-    """Render top identity navigation bar with logo, research cohort badge, and controls."""
+def render_chart_container(title: str, subtitle: str = ""):
+    """Render chart header inside dark card."""
+    sub_html = f'<div style="font-size: 0.82rem; color: #94A3B8; margin-top: 2px;">{subtitle}</div>' if subtitle else ''
+    return f"""
+    <div style="margin-bottom: 0.8rem;">
+        <div style="font-size: 1.05rem; font-weight: 800; color: #FFFFFF;">{title}</div>
+        {sub_html}
+    </div>
+    """
+
+
+def render_top_bar(active_cohort: str = "2023 Cohort"):
+    """Render the exact top navigation bar matching the visual reference image."""
     st.markdown(
         f"""
-        <div class="top-bar-container">
-            <div class="top-bar-brand">
-                <div class="top-bar-logo-icon">⚡</div>
-                <div>
-                    <div class="top-bar-brand-title">ATHLETIX AI</div>
-                    <div class="top-bar-brand-sub">NFL Movement Intelligence • Big Data Bowl 2027</div>
+        <div class="top-bar-dark">
+            <div class="search-box-container">
+                <span class="search-box-icon">🔍</span>
+                <span class="search-box-text">Search prospects, metrics, or studies...</span>
+                <span class="search-kbd-badge">Ctrl + K</span>
+            </div>
+            <div class="top-bar-controls">
+                <div class="cohort-dropdown-pill">
+                    <span>📅</span>
+                    <span>{active_cohort}</span>
+                    <span style="font-size: 0.72rem; color: #94A3B8;">▼</span>
+                </div>
+                <div class="icon-circle-btn">
+                    <span>🔔</span>
+                    <span class="notification-dot"></span>
+                </div>
+                <div class="icon-circle-btn" style="background: #1F2732; border-color: #333D4B;">
+                    <span>👤</span>
                 </div>
             </div>
-            <div class="top-bar-pills">
-                <span class="top-pill top-pill-lime">● {active_cohort}</span>
-                <span class="top-pill top-pill-dark">10 Hz RFID Feeds</span>
-                <span class="top-pill">🔔 0 Alerts</span>
-                <span class="top-pill" style="font-weight: 700;">👤 Scouting Lab</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_editorial_header(title: str, subtitle: str, tag: str = "RESEARCH OVERVIEW"):
+    """Render hero editorial title and subtitle matching the reference typography."""
+    st.markdown(
+        f"""
+        <div style="margin-bottom: 1.8rem; position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <div style="font-size: 0.78rem; font-weight: 800; color: #C8F45A; text-transform: uppercase; letter-spacing: 0.10em; margin-bottom: 8px;">
+                        {tag}
+                    </div>
+                    <h1 style="font-size: 2.7rem; font-weight: 900; letter-spacing: -0.04em; color: #FFFFFF; line-height: 1.15; margin: 0;">
+                        {title}
+                    </h1>
+                    <p style="font-size: 1.05rem; color: #94A3B8; margin-top: 8px; margin-bottom: 0; max-width: 680px; line-height: 1.5;">
+                        {subtitle}
+                    </p>
+                </div>
+                <div style="text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 700; color: #64748B; letter-spacing: 0.16em; line-height: 1.8; padding-top: 10px;">
+                    MOVEMENT<br>
+                    BIOMECHANICS<br>
+                    PERFORMANCE<br>
+                    INTELLIGENCE
+                </div>
             </div>
         </div>
         """,
@@ -573,48 +740,44 @@ def render_top_bar(active_cohort: str = "149 Scrimmage Cohort"):
     )
 
 
-def render_editorial_header(title: str, subtitle: str, tag: str = ""):
-    """Render a clean editorial-style page title and subtitle."""
-    tag_html = f'<span class="pill-badge pill-badge-lime" style="margin-bottom: 8px;">{tag}</span><br>' if tag else ''
-    st.markdown(
-        f"""
-        <div class="editorial-header">
-            {tag_html}
-            <h1 class="editorial-title">{title}</h1>
-            <p class="editorial-subtitle">{subtitle}</p>
+def render_card_header(title: str, subtitle: str = "", action_text: str = "Details ↗", dark_action: bool = False):
+    """Render card header with title and action badge."""
+    sub_html = f'<div style="font-size: 0.78rem; color: #94A3B8; margin-top: 2px;">{subtitle}</div>' if subtitle else ''
+    return f"""
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+            <div style="font-size: 1.12rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em;">{title}</div>
+            {sub_html}
         </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def render_section_header(title: str, subtitle: str = "", badge: str = ""):
-    """Render a clean section header with optional subtitle and badge."""
-    badge_html = f'<span class="pill-badge pill-badge-lime">{badge}</span>' if badge else ''
-    subtitle_html = f'<div class="section-header-subtitle">{subtitle}</div>' if subtitle else ''
-    st.markdown(
-        f"""
-        <div class="section-header-container">
-            <div>
-                <h2 class="section-header-title">{title}</h2>
-                {subtitle_html}
-            </div>
-            {badge_html}
+        <div style="font-size: 0.76rem; font-weight: 700; color: #C8F45A; background: rgba(200, 244, 90, 0.12); padding: 4px 12px; border-radius: 9999px; border: 1px solid rgba(200, 244, 90, 0.25);">
+            {action_text}
         </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    </div>
+    """
 
 
 def render_kpi_card_v2(label: str, value: str, subtext: str = "", highlight_lime: bool = False):
-    """Render high-clarity minimalist KPI card."""
-    border_style = "border-color: #B8E64B; background-color: #FAFDF5;" if highlight_lime else ""
-    val_color = "color: #171917;"
+    """Render dark KPI card matching the 6-grid layout in the visual reference."""
+    active_class = "kpi-dark-card-active" if highlight_lime else "kpi-dark-card"
+    icon_wrap_class = "kpi-dark-icon-wrap-lime" if highlight_lime else "kpi-dark-icon-wrap"
+    
+    icon_map = {
+        "Combine Prospects": "👥",
+        "In-Game Tracked": "🏃",
+        "Research Cohort": "📚",
+        "Route Separation": "🔬",
+        "Drill Trials": "🏋️",
+        "Tracking Frames": "💾",
+    }
+    icon = icon_map.get(label, "⚡")
+    
     return f"""
-    <div class="kpi-card-v2" style="{border_style}">
-        <div class="kpi-label-v2">{label}</div>
-        <div class="kpi-value-v2" style="{val_color}">{value}</div>
-        {f'<div class="kpi-subtext-v2">{subtext}</div>' if subtext else ''}
+    <div class="{active_class}">
+        <div class="{icon_wrap_class}">{icon}</div>
+        <div>
+            <div class="kpi-dark-num">{value}</div>
+            <div class="kpi-dark-label">{label}</div>
+        </div>
     </div>
     """
 
@@ -625,102 +788,146 @@ def render_kpi_card(label: str, value: str, subtext: str = "", highlight_lime: b
 
 
 def render_metric_card(title: str, value: str, unit: str = "", badge_text: str = "", badge_color: str = "lime", subtext: str = ""):
-    """Render a compact metric card with title, value, unit, and badge."""
-    badge_class = f"pill-badge-{badge_color}" if badge_color in ["lime", "dark", "grey", "red"] else "pill-badge-lime"
-    badge_html = f'<span class="pill-badge {badge_class}">{badge_text}</span>' if badge_text else ''
-    subtext_html = f'<div style="font-size: 0.74rem; color: #858B86; margin-top: 4px;">{subtext}</div>' if subtext else ''
+    """Render compact metric card in dark styling."""
+    badge_bg = "var(--accent-lime)" if badge_color == "lime" else "#1F2732"
+    badge_txt = "#0B0E11" if badge_color == "lime" else "#FFFFFF"
+    badge_html = f'<span style="background:{badge_bg}; color:{badge_txt}; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:9999px;">{badge_text}</span>' if badge_text else ''
+    subtext_html = f'<div style="font-size:0.74rem; color:#8B949E; margin-top:4px;">{subtext}</div>' if subtext else ''
+    
     return f"""
-    <div class="metric-card-box">
-        <div class="metric-card-top">
-            <span class="metric-card-title">{title}</span>
+    <div style="background:#161B22; border:1px solid #242D38; border-radius:14px; padding:0.95rem 1.15rem; box-shadow:0 4px 14px rgba(0,0,0,0.3);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#94A3B8;">{title}</span>
             {badge_html}
         </div>
-        <div style="display: flex; align-items: baseline;">
-            <span class="metric-card-value">{value}</span>
-            {f'<span class="metric-card-unit">{unit}</span>' if unit else ''}
+        <div style="display:flex; align-items:baseline;">
+            <span style="font-size:1.55rem; font-weight:800; color:#FFFFFF; letter-spacing:-0.03em;">{value}</span>
+            {f'<span style="font-size:0.80rem; font-weight:600; color:#94A3B8; margin-left:4px;">{unit}</span>' if unit else ''}
         </div>
         {subtext_html}
     </div>
     """
 
 
-def render_chart_container(fig, title: str = "", caption: str = ""):
-    """Render a Plotly chart inside a styled card container."""
-    header_html = ""
-    if title or caption:
-        header_html = f"""
-        <div class="chart-header-row">
-            <div>
-                {f'<div class="chart-title-text">{title}</div>' if title else ''}
-                {f'<div class="chart-caption-text">{caption}</div>' if caption else ''}
+def render_scientific_banner(title: str, text: str):
+    """Render scientific boundary card with neon lime accent bar in dark styling."""
+    st.markdown(
+        f"""
+        <div class="scientific-banner">
+            <div style="font-weight: 800; font-size: 0.90rem; text-transform: uppercase; letter-spacing: 0.05em; color: #C8F45A; margin-bottom: 4px;">
+                🔬 {title}
+            </div>
+            <div style="color: #D1D5DB; font-size: 0.88rem; line-height: 1.55;">
+                {text}
             </div>
         </div>
-        """
-        st.markdown(f'<div class="chart-container-box">{header_html}', unsafe_allow_html=True)
-        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-        st.markdown('</div>', unsafe_allow_html=True)
-    else:
-        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-
-
-def render_player_selector(player_options: List[str], default_index: int = 0, key: str = "player_selector", label: str = "Select Prospect"):
-    """Render standardized prospect dropdown selector."""
-    return st.selectbox(
-        label,
-        options=player_options,
-        index=default_index if 0 <= default_index < len(player_options) else 0,
-        key=key,
+        """,
+        unsafe_allow_html=True,
     )
 
 
-def render_search_filter_bar(search_key: str = "filter_search", placeholder: str = "Search prospects, positions, colleges..."):
-    """Render standardized search bar."""
-    return st.text_input(
-        "Search",
-        placeholder=placeholder,
-        key=search_key,
-        label_visibility="collapsed",
+def render_feature_card(title: str, subtitle: str, icon: str, badge: str = "", bg_image_url: str = ""):
+    """Render bottom feature card matching Visual Reference 4 with photo background and circular arrow."""
+    badge_html = f'<span style="background:rgba(200,244,90,0.18); color:#C8F45A; border:1px solid rgba(200,244,90,0.35); font-size:0.68rem; font-weight:700; padding:2px 8px; border-radius:9999px;">{badge}</span>' if badge else ''
+    
+    bg_style = f"background-image: linear-gradient(180deg, rgba(22,27,34,0.7) 0%, rgba(22,27,34,0.95) 100%), url('{bg_image_url}');" if bg_image_url else "background: #161B22;"
+    
+    return f"""
+    <div class="feature-hero-card" style="{bg_style}">
+        <div class="feature-card-content">
+            <div class="feature-card-icon-pill">{icon}</div>
+            <div class="feature-card-title-row">
+                <span class="feature-card-title">{title}</span>
+                {badge_html}
+            </div>
+            <div class="feature-card-desc">{subtitle}</div>
+        </div>
+        <div class="feature-card-arrow-btn">➔</div>
+    </div>
+    """
+
+
+def render_section_header(title: str, subtitle: str = "", badge: str = ""):
+    """Render clean dark section header."""
+    badge_html = f'<span class="pill-badge pill-badge-lime">{badge}</span>' if badge else ''
+    subtitle_html = f'<div style="font-size: 0.84rem; color: #94A3B8; margin-top: 2px;">{subtitle}</div>' if subtitle else ''
+    st.markdown(
+        f"""
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.6rem; margin-bottom: 1.0rem;">
+            <div>
+                <h2 style="font-size: 1.25rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em; margin: 0;">{title}</h2>
+                {subtitle_html}
+            </div>
+            {badge_html}
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
 
 def render_status_indicator(status_text: str, is_active: bool = True, badge: str = "ONLINE"):
-    """Render status pill with green/grey glowing dot."""
-    dot_class = "status-dot-active" if is_active else "status-dot-inactive"
+    """Render glowing online status pill in sidebar."""
     st.markdown(
         f"""
-        <div class="status-pill">
-            <span class="{dot_class}"></span>
+        <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 9999px; background: #161B22; border: 1px solid #242D38; font-size: 0.76rem; color: #FFFFFF;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #C8F45A; box-shadow: 0 0 8px #C8F45A;"></span>
             <span>{status_text}</span>
-            <span class="pill-badge pill-badge-lime" style="font-size: 0.68rem; padding: 2px 8px; margin-left: 4px;">{badge}</span>
+            <span style="background: rgba(200, 244, 90, 0.2); color: #C8F45A; font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 9999px; margin-left: 4px;">{badge}</span>
         </div>
         """,
         unsafe_allow_html=True,
     )
+
+
+def render_segmented_bar(label: str, percent: int, bar_type: str = "lime", sublabel: str = ""):
+    """Render dark segmented progress bar."""
+    sub_html = f'<span style="font-size: 0.74rem; color: #94A3B8; font-weight: 500;">{sublabel}</span>' if sublabel else ''
+    bar_color = "var(--accent-lime)" if bar_type == "lime" else ("#F59E0B" if bar_type == "amber" else "#3B82F6")
+    return f"""
+    <div style="margin-bottom: 0.9rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.35rem;">
+            <span>{label} {sub_html}</span>
+            <span style="color: #FFFFFF;">{percent}%</span>
+        </div>
+        <div style="height: 8px; background: #242D38; border-radius: 9999px; overflow: hidden;">
+            <div style="width: {min(max(percent, 0), 100)}%; height: 100%; background: {bar_color}; border-radius: 9999px;"></div>
+        </div>
+    </div>
+    """
+
+
+def render_dark_ai_card(title: str, recommendation: str, bullets: Optional[List[str]] = None, tag: str = "AI SCOUT SUGGESTION"):
+    """Render dark AI intelligence card."""
+    bullets_html = ""
+    if bullets:
+        bullets_items = "".join([f"<li style='margin-bottom: 4px;'>{b}</li>" for b in bullets])
+        bullets_html = f"<ul style='padding-left: 18px; margin-top: 8px; font-size: 0.82rem; color: #94A3B8;'>{bullets_items}</ul>"
+
+    return f"""
+    <div style="background: #161B22; border: 1px solid #242D38; border-radius: 18px; padding: 1.4rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+            <span class="pill-badge pill-badge-lime" style="font-size: 0.70rem;">{tag}</span>
+            <span style="font-size: 0.85rem; color: #64748B;">↗</span>
+        </div>
+        <div style="font-size: 1.15rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem;">
+            {title}
+        </div>
+        <div style="font-size: 0.85rem; color: #D1D5DB; line-height: 1.55;">
+            {recommendation}
+        </div>
+        {bullets_html}
+    </div>
+    """
 
 
 def render_empty_state(title: str = "No Records Found", message: str = "Try adjusting your filters or search terms.", icon: str = "🔍"):
-    """Render empty state card when search or filters return zero items."""
+    """Render empty state card in dark styling."""
     st.markdown(
         f"""
-        <div class="empty-state-box">
-            <div class="empty-state-icon">{icon}</div>
-            <div class="empty-state-title">{title}</div>
-            <div class="empty-state-msg">{message}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def render_scientific_banner(title: str, text: str):
-    """Render scientific boundary card in minimal editorial style."""
-    st.markdown(
-        f"""
-        <div class="scientific-banner">
-            <div style="font-weight: 800; font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;">
-                🔬 {title}
-            </div>
-            <div>{text}</div>
+        <div style="text-align: center; padding: 3rem 2rem; background: #161B22; border: 1px dashed #242D38; border-radius: 18px; margin: 1.5rem 0;">
+            <div style="font-size: 2.4rem; margin-bottom: 0.8rem;">{icon}</div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: #FFFFFF; margin-bottom: 0.3rem;">{title}</div>
+            <div style="font-size: 0.86rem; color: #94A3B8; max-width: 400px; margin: 0 auto;">{message}</div>
         </div>
         """,
         unsafe_allow_html=True,

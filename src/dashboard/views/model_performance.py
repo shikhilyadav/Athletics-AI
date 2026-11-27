@@ -78,13 +78,13 @@ def render_page():
             with c2:
                 st.markdown(
                     """
-                    <div style="background: #FAFDF5; border: 1px solid #B8E64B; border-radius: 14px; padding: 1.1rem 1.3rem;">
-                        <div style="font-size: 0.76rem; font-weight: 700; color: #171917; text-transform: uppercase; margin-bottom: 4px;">PAIRED ERROR COMPARISON</div>
-                        <div style="font-size: 1.1rem; font-weight: 800; color: #171917;">ΔRMSE = +0.0210 yd/s</div>
-                        <div style="font-size: 0.82rem; color: #4A5248; margin-top: 4px;">
-                            • Paired Error t-test: t = -2.7411 (p = 0.0069)<br>
-                            • Wilcoxon Signed-Rank: W = 4,218 (p = 0.0084)<br>
-                            • Conclusion: Model A is statistically superior to Model C.
+                    <div style="background: #1B222D; border: 1px solid #C8F45A; border-radius: 14px; padding: 1.1rem 1.3rem; box-shadow: 0 0 15px rgba(200, 244, 90, 0.15);">
+                        <div style="font-size: 0.76rem; font-weight: 700; color: #C8F45A; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.06em;">PAIRED ERROR COMPARISON</div>
+                        <div style="font-size: 1.25rem; font-weight: 800; color: #FFFFFF;">ΔRMSE = +0.0210 yd/s</div>
+                        <div style="font-size: 0.84rem; color: #94A3B8; margin-top: 6px; line-height: 1.5;">
+                            • Paired Error t-test: <strong style="color:#FFFFFF;">t = -2.7411</strong> (p = 0.0069)<br>
+                            • Wilcoxon Signed-Rank: <strong style="color:#FFFFFF;">W = 4,218</strong> (p = 0.0084)<br>
+                            • Conclusion: <span style="color:#C8F45A; font-weight:700;">Model A is statistically superior to Model C.</span>
                         </div>
                     </div>
                     """,

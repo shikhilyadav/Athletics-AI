@@ -43,18 +43,25 @@ def render_page():
     )
     all_player_labels = df.sort_values(by="display_name")["selector_label"].tolist()
     
-    # Defaults: Zay Flowers vs. Quentin Johnston (or Cam Smith vs. another prospect)
+    # Defaults: Will Anderson Jr. vs. Lukas Van Ness (matching reference image)
     default_p1_idx = 0
     default_p2_idx = min(1, len(all_player_labels) - 1)
     
     for i, lbl in enumerate(all_player_labels):
-        if "Flowers" in lbl:
+        if "Will Anderson" in lbl or "Anderson" in lbl:
             default_p1_idx = i
-        if "Johnston" in lbl:
-            default_p2_idx = i
+            break
             
+    for i, lbl in enumerate(all_player_labels):
+        if "Van Ness" in lbl:
+            default_p2_idx = i
+            break
+            
+    sel_col1, sel_mid, sel_col2 = st.columns([10, 1, 10])
     with sel_col1:
         p1_label = st.selectbox("Select Athlete 1 (Baseline)", all_player_labels, index=default_p1_idx)
+    with sel_mid:
+        st.markdown('<div style="text-align: center; font-size: 1.5rem; margin-top: 1.8rem; color: #C8F45A;">⇄</div>', unsafe_allow_html=True)
     with sel_col2:
         p2_label = st.selectbox("Select Athlete 2 (Challenger)", all_player_labels, index=default_p2_idx)
     st.markdown('</div>', unsafe_allow_html=True)
@@ -70,20 +77,23 @@ def render_page():
         alpha1_str = f"{p1['athletic_alpha_raw']:+.2f} yd/s" if pd.notna(p1.get('athletic_alpha_raw')) else "N/A"
         st.markdown(
             f"""
-            <div class="athletix-card-dark">
-                <div style="font-size: 0.76rem; font-weight: 700; color: #C8F45A; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;">
-                    ATHLETE 1 • {p1['nfl_position']}
-                </div>
-                <div style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 4px;">
-                    {p1['display_name']}
-                </div>
-                <div style="color: #A3A8A4; font-size: 0.9rem; margin-bottom: 12px;">
-                    {p1['college_name']} • {pick1}
-                </div>
-                <div style="display: flex; gap: 12px; margin-top: 10px;">
-                    <span class="pill-badge pill-badge-lime">40yd: {fmt_time(p1['forty'])}</span>
-                    <span class="pill-badge pill-badge-dark" style="background:#282B28;">Alpha: {alpha1_str}</span>
-                    <span class="pill-badge pill-badge-dark" style="background:#282B28;">{fmt_weight_lbs(p1['combine_weight'])}</span>
+            <div style="background: #161B22; border: 1px solid #242D38; border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.35);">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div class="bio-avatar-circle">👤</div>
+                    <div style="flex-grow: 1;">
+                        <div style="font-size: 0.72rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.08em;">
+                            ATHLETE 1 • {p1['nfl_position']} (BASELINE)
+                        </div>
+                        <div style="font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; color: #FFFFFF;">
+                            {p1['display_name']}
+                        </div>
+                        <div style="color: #94A3B8; font-size: 0.82rem;">
+                            {p1['college_name']} • {pick1}
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="pill-badge pill-badge-lime">40yd: {fmt_time(p1['forty'])}</span>
+                    </div>
                 </div>
             </div>
             """,
@@ -95,91 +105,103 @@ def render_page():
         alpha2_str = f"{p2['athletic_alpha_raw']:+.2f} yd/s" if pd.notna(p2.get('athletic_alpha_raw')) else "N/A"
         st.markdown(
             f"""
-            <div class="athletix-card-lime">
-                <div style="font-size: 0.76rem; font-weight: 700; color: #171917; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;">
-                    ATHLETE 2 • {p2['nfl_position']}
-                </div>
-                <div style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 4px; color: #171917;">
-                    {p2['display_name']}
-                </div>
-                <div style="color: #4A5248; font-size: 0.9rem; margin-bottom: 12px;">
-                    {p2['college_name']} • {pick2}
-                </div>
-                <div style="display: flex; gap: 12px; margin-top: 10px;">
-                    <span class="pill-badge pill-badge-dark">40yd: {fmt_time(p2['forty'])}</span>
-                    <span class="pill-badge" style="background:#FFFFFF; color:#171917;">Alpha: {alpha2_str}</span>
-                    <span class="pill-badge" style="background:#FFFFFF; color:#171917;">{fmt_weight_lbs(p2['combine_weight'])}</span>
+            <div style="background: linear-gradient(135deg, rgba(200, 244, 90, 0.09) 0%, #161B22 100%); border: 1.5px solid #C8F45A; border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 0 20px rgba(200, 244, 90, 0.15);">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div class="bio-avatar-circle" style="border-color: #A78BFA;">👤</div>
+                    <div style="flex-grow: 1;">
+                        <div style="font-size: 0.72rem; font-weight: 700; color: #C8F45A; text-transform: uppercase; letter-spacing: 0.08em;">
+                            ATHLETE 2 • {p2['nfl_position']} (CHALLENGER)
+                        </div>
+                        <div style="font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; color: #FFFFFF;">
+                            {p2['display_name']}
+                        </div>
+                        <div style="color: #94A3B8; font-size: 0.82rem;">
+                            {p2['college_name']} • {pick2}
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="pill-badge pill-badge-lime" style="background:#A78BFA; color:#0B0E11;">40yd: {fmt_time(p2['forty'])}</span>
+                    </div>
                 </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    # Visual Comparison Studio: Radar Chart & Sprint Curves
+    # Visual Comparison Studio: Radar Chart on Left vs Head-to-Head Table on Right (Matching Image)
     r_col1, r_col2 = st.columns([1, 1])
+    
     with r_col1:
-        st.markdown('<div class="athletix-card">', unsafe_allow_html=True)
+        st.markdown('<div class="athletix-card" style="height: 100%;">', unsafe_allow_html=True)
         st.plotly_chart(plot_radar_comparison(p1, p2, df), use_container_width=True)
-        st.caption("ℹ️ *Percentile normalization: Standardized percentile rank [0, 100] calculated across all 510 Combine prospects. For 10-yard split, lower stopwatch times yield higher burst percentiles.*")
         st.markdown('</div>', unsafe_allow_html=True)
         
     with r_col2:
-        st.markdown('<div class="athletix-card">', unsafe_allow_html=True)
-        st.plotly_chart(plot_sprint_curve_overlay(p1, p2), use_container_width=True)
-        st.caption("ℹ️ *Sprint Rise Dynamics: Modeled continuous velocity profiles v(t) = vmax(1 - e^-t/τ) fitted via non-linear least squares. Dotted horizontal lines indicate asymptotic model velocity ceilings.*")
+        st.markdown('<div class="athletix-card" style="height: 100%;">', unsafe_allow_html=True)
+        
+        p1_short = p1['display_name'].split()[-1]
+        p2_short = p2['display_name'].split()[-1]
+        
+        comparison_metrics = [
+            ("40-Yard Dash (s)", "forty", fmt_time, True),
+            ("Vertical Jump (in)", "vertical", fmt_dist_in, False),
+            ("Broad Jump (in)", "broad_jump", fmt_dist_in, False),
+            ("Max Speed (yd/s)", "combine_max_speed", fmt_speed, False),
+            ("COD Apex Speed (yd/s)", "combine_mean_cod_apex_speed", fmt_speed, False),
+            ("Speed Preservation", "combine_mean_speed_preservation_ratio", fmt_ratio, False),
+            ("Athletic Alpha (yd/s)", "athletic_alpha_raw", lambda x: f"{x:+.2f}" if pd.notna(x) else "N/A", False),
+        ]
+        
+        table_html = f"""
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.86rem; color: #FFFFFF;">
+            <thead>
+                <tr style="border-bottom: 1px solid #242D38; color: #94A3B8; font-size: 0.76rem; text-transform: uppercase;">
+                    <th style="text-align: left; padding: 10px 8px;">Metric</th>
+                    <th style="text-align: center; padding: 10px 8px; color: #C8F45A;">{p1_short}</th>
+                    <th style="text-align: center; padding: 10px 8px; color: #A78BFA;">{p2_short}</th>
+                    <th style="text-align: right; padding: 10px 8px;">Δ (A - B)</th>
+                </tr>
+            </thead>
+            <tbody>
+        """
+        
+        for label, col, fmt_func, lower_is_better in comparison_metrics:
+            v1 = p1.get(col)
+            v2 = p2.get(col)
+            
+            delta_str = "—"
+            delta_color = "#94A3B8"
+            if pd.notna(v1) and pd.notna(v2):
+                diff = v1 - v2
+                delta_str = f"{diff:+.2f}"
+                if (diff > 0 and not lower_is_better) or (diff < 0 and lower_is_better):
+                    delta_color = "#C8F45A"
+                elif diff != 0:
+                    delta_color = "#A78BFA"
+            
+            is_alpha = (col == "athletic_alpha_raw")
+            if is_alpha:
+                row_style = "background: #C8F45A; color: #0B0E11; font-weight: 800; border-radius: 8px;"
+                cell_style = "padding: 10px 8px; color: #0B0E11; font-weight: 800;"
+            else:
+                row_style = "border-bottom: 1px solid #1C232B;"
+                cell_style = "padding: 9px 8px;"
+                
+            table_html += f"""
+                <tr style="{row_style}">
+                    <td style="{cell_style} text-align: left;">{label}</td>
+                    <td style="{cell_style} text-align: center;">{fmt_func(v1)}</td>
+                    <td style="{cell_style} text-align: center;">{fmt_func(v2)}</td>
+                    <td style="{cell_style} text-align: right; {f'color:{delta_color};' if not is_alpha else ''}">{delta_str}</td>
+                </tr>
+            """
+            
+        table_html += """
+            </tbody>
+        </table>
+        """
+        st.markdown(table_html, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-
-    # Detailed Side-by-Side Metric Table with Difference Badges
-    st.markdown('<div class="athletix-card">', unsafe_allow_html=True)
-    st.markdown("### 📊 Head-to-Head Metric Dissection & Delta Analysis")
-    
-    comparison_metrics = [
-        # (Label, Column, FormatFunc, LowerIsBetter, Unit)
-        ("40-Yard Dash", "forty", fmt_time, True, "s"),
-        ("10-Yard Split", "ten_yd_split", fmt_time, True, "s"),
-        ("Vertical Jump", "vertical", fmt_dist_in, False, 'in'),
-        ("Broad Jump", "broad_jump", fmt_dist_in, False, 'in'),
-        ("3-Cone Drill", "three_cone", fmt_time, True, "s"),
-        ("20-Yard Shuttle", "short_shuttle", fmt_time, True, "s"),
-        ("Combine Max Speed", "combine_max_speed", fmt_speed, False, "yd/s"),
-        ("Initial Acceleration (First 0.5s)", "combine_initial_accel_mean", fmt_accel, False, "yd/s²"),
-        ("Sprint Time Constant (τ)", "forty_curve_tau", fmt_time, True, "s"),
-        ("Asymptotic Velocity (Vmax)", "forty_curve_vmax", fmt_speed, False, "yd/s"),
-        ("COD Apex Speed", "combine_mean_cod_apex_speed", fmt_speed, False, "yd/s"),
-        ("Speed Preservation Ratio", "combine_mean_speed_preservation_ratio", fmt_ratio, False, "ratio"),
-        ("Peak Angular Velocity", "combine_peak_angular_velocity", lambda x: f"{x:.1f}°/s" if pd.notna(x) else "N/A", False, "deg/s"),
-        ("NFL Game P95 Speed", "game_speed_p95", fmt_speed, False, "yd/s"),
-        ("Athletic Alpha (Residual)", "athletic_alpha_raw", lambda x: f"{x:+.2f} yd/s" if pd.notna(x) else "N/A", False, "yd/s"),
-    ]
-    
-    rows = []
-    for label, col, fmt_func, lower_is_better, unit in comparison_metrics:
-        v1 = p1.get(col)
-        v2 = p2.get(col)
-        
-        # Calculate delta
-        delta_str = "—"
-        advantage = "Tied / Neutral"
-        if pd.notna(v1) and pd.notna(v2):
-            diff = v2 - v1
-            if diff != 0:
-                delta_str = f"{diff:+.2f} {unit}"
-                if lower_is_better:
-                    advantage = f"{p2['display_name']} Faster" if diff < 0 else f"{p1['display_name']} Faster"
-                else:
-                    advantage = f"{p2['display_name']} Superior" if diff > 0 else f"{p1['display_name']} Superior"
-                    
-        rows.append({
-            "Biomechanical Dimension": label,
-            f"{p1['display_name']} (Athlete 1)": fmt_func(v1),
-            f"{p2['display_name']} (Athlete 2)": fmt_func(v2),
-            "Delta (A2 - A1)": delta_str,
-            "Advantage": advantage,
-        })
-        
-    comp_df = pd.DataFrame(rows)
-    st.dataframe(comp_df, use_container_width=True, hide_index=True)
-    st.markdown('</div>', unsafe_allow_html=True)
     
     render_scientific_banner(
         "Scientific & Normalization Methodology",

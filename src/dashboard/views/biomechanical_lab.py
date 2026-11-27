@@ -23,6 +23,7 @@ from src.dashboard.charts import (
     plot_acceleration_profile,
     plot_cod_interactive_scatter,
     plot_biomechanical_profile_radar,
+    plot_3d_motion_analysis,
     THEME_LAYOUT,
     COLOR_BLACK,
     COLOR_LIME,
@@ -74,65 +75,22 @@ def render_page():
         "Do not treat total acceleration vector magnitude <code>√(ax² + ay²)</code> as signed tangential acceleration.",
     )
 
-    # Step 2: Four Navigation Tabs
-    tab1, tab2, tab3, tab4 = st.tabs([
-        "1. Sprint Intelligence",
-        "2. Change of Direction",
-        "3. Acceleration & Deceleration",
-        "4. Player Analysis",
+    # Four Signature Tabs + 3D Motion Reconstruction Tab
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "Sprint Intelligence",
+        "Change of Direction",
+        "Acceleration & Deceleration",
+        "Player Analysis",
+        "3D Motion Analysis",
     ])
 
     # =========================================================================
-    # TAB 1: SPRINT INTELLIGENCE
+    # TAB 1: SPRINT INTELLIGENCE (Direct Reference Alignment)
     # =========================================================================
     with tab1:
         st.markdown('<div class="athletix-card">', unsafe_allow_html=True)
-        render_section_header(
-            title="Mono-Exponential Sprint Curve Modeling",
-            subtitle="Evaluating 10 Hz RFID velocity rise dynamics: v(t) = vmax × (1 - exp(-t/τ))",
-            badge="10 HZ SPRINT FIT",
-        )
         
-        # Fit Quality & Cohort Denominators
-        sk1, sk2, sk3, sk4 = st.columns(4)
-        with sk1:
-            st.markdown(render_kpi_card_v2("Evaluated 40yd Sprints", "418", "793 Trials (from 6,310 total)"), unsafe_allow_html=True)
-        with sk2:
-            st.markdown(render_kpi_card_v2("R² ≥ 0.98 (Exceptional)", "385", "92.1% of Evaluated Prospects", highlight_lime=True), unsafe_allow_html=True)
-        with sk3:
-            st.markdown(render_kpi_card_v2("R² ≥ 0.95 (High Fit)", "413", "98.8% of Evaluated Prospects", highlight_lime=True), unsafe_allow_html=True)
-        with sk4:
-            st.markdown(render_kpi_card_v2("Skipped / DNP 40yd", "92", "18.0% of 510 Attendees"), unsafe_allow_html=True)
-            
-        st.markdown("<br>", unsafe_allow_html=True)
-        
-        # Fit Quality Distribution and Technical Explanation
-        col_dist1, col_dist2 = st.columns([3, 2])
-        with col_dist1:
-            st.plotly_chart(plot_sprint_curve_distribution(master_df), use_container_width=True)
-        with col_dist2:
-            st.markdown(
-                """
-                <div style="background: #F5F7F5; border-radius: 16px; padding: 1.2rem; border: 1px solid #E5E7E5; font-size: 0.82rem; color: #171917; line-height: 1.6;">
-                    <strong style="font-size: 0.9rem;">Methodological Integrity Standards:</strong><br>
-                    • <strong>Total Trials vs. 40yd Sprints:</strong> The Combine dataset contains <strong>6,310 trials</strong> across all drills. Only <strong>793 trials</strong> represent straight-line 40-yard dashes.<br>
-                    • <strong>Asymptotic Vmax Parameter:</strong> <code>vmax</code> is an extrapolation ceiling parameter; it is not constrained to be the instantaneous peak speed reached during 40 yards.<br>
-                    • <strong>Time Constant (τ):</strong> Reflects acceleration burst duration (smaller τ indicates steeper initial rise and earlier velocity plateau).<br>
-                    • <strong>Convergence Caution:</strong> Do <em>not</em> treat algorithm convergence as proof of good fit. Five prospects converged with R² &lt; 0.95 due to stride stumble, early pull-up, or tracking noise.
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        # Interactive Prospect Sprint Curve Visualizer
-        st.markdown('<div class="athletix-card">', unsafe_allow_html=True)
-        render_section_header(
-            title="Interactive Sprint Velocity Visualizer",
-            subtitle="Inspect individual prospect modeled curves against observed sensor peaks and split times.",
-            badge="INTERACTIVE KINEMATICS",
-        )
-        
+        # Prospect Selector
         valid_sprint_df = master_df.dropna(subset=["forty_curve_tau", "forty_curve_vmax", "forty_curve_r2"]).copy()
         valid_sprint_df = valid_sprint_df.sort_values(by="display_name")
         
@@ -167,10 +125,12 @@ def render_page():
         forty_time = p_row["forty"]
         ten_split = p_row["ten_yd_split"]
         obs_max_speed = p_row["combine_max_speed"]
+        p_pos = p_row.get("nfl_position", "?")
+        p_college = p_row.get("college_name", "N/A")
         
         # Fit Tier Classification
         if r2_fit >= 0.98:
-            fit_tier = "Exceptional (R² ≥ 0.98)"
+            fit_tier = "Exceptional Fit (R² ≥ 0.98)"
             badge_color = "lime"
         elif r2_fit >= 0.95:
             fit_tier = "High Fit (R² ≥ 0.95)"
@@ -179,25 +139,83 @@ def render_page():
             fit_tier = "Moderate/Low (R² < 0.95)"
             badge_color = "red"
             
-        # KPI Row for Selected Prospect
-        k1, k2, k3, k4, k5, k6 = st.columns(6)
-        with k1:
-            st.markdown(render_kpi_card_v2("40-Yard Time", fmt_time(forty_time), "Stopwatch"), unsafe_allow_html=True)
-        with k2:
-            st.markdown(render_kpi_card_v2("10-Yard Split", fmt_time(ten_split), "Initial Burst"), unsafe_allow_html=True)
-        with k3:
-            st.markdown(render_kpi_card_v2("Observed Peak", fmt_speed(obs_max_speed), "10 Hz Sensor"), unsafe_allow_html=True)
-        with k4:
-            st.markdown(render_kpi_card_v2("Asymptotic Vmax", fmt_speed(vmax_param), "Fitted Ceiling", highlight_lime=True), unsafe_allow_html=True)
-        with k5:
-            st.markdown(render_kpi_card_v2("Time Constant (τ)", fmt_time(tau_val), "Burst Rate"), unsafe_allow_html=True)
-        with k6:
-            st.markdown(render_kpi_card_v2("Goodness of Fit", f"{r2_fit:.4f}", fit_tier, highlight_lime=(r2_fit >= 0.98)), unsafe_allow_html=True)
+        # Two-Column Layout (Matching Bottom-Left Reference Image Exactly)
+        bio_col1, bio_col2 = st.columns([1.1, 2.3])
+        
+        with bio_col1:
+            st.markdown(
+                f"""
+                <div class="bio-prospect-card">
+                    <div class="bio-prospect-header">
+                        <div class="bio-avatar-circle">👤</div>
+                        <div>
+                            <div class="bio-prospect-name">{p_name} ({p_pos})</div>
+                            <div class="bio-prospect-meta">@{p_college}</div>
+                        </div>
+                    </div>
+                    <div class="bio-kpi-row">
+                        <span class="bio-kpi-label">40-Yard Time</span>
+                        <span class="bio-kpi-val">{fmt_time(forty_time)}</span>
+                    </div>
+                    <div class="bio-kpi-row">
+                        <span class="bio-kpi-label">Observed Max</span>
+                        <span class="bio-kpi-val">{fmt_speed(obs_max_speed)}</span>
+                    </div>
+                    <div class="bio-kpi-row">
+                        <span class="bio-kpi-label">Asymptotic Vmax</span>
+                        <span class="bio-kpi-val" style="color: #C8F45A;">{fmt_speed(vmax_param)}</span>
+                    </div>
+                    <div class="bio-kpi-row">
+                        <span class="bio-kpi-label">Time Constant (τ)</span>
+                        <span class="bio-kpi-val">{fmt_time(tau_val)}</span>
+                    </div>
+                    <div class="bio-kpi-row">
+                        <span class="bio-kpi-label">Fit Quality (R²)</span>
+                        <span class="bio-kpi-val" style="color: #C8F45A;">{r2_fit:.4f}</span>
+                    </div>
+                    <div style="margin-top: 16px; text-align: center;">
+                        <span class="pill-badge pill-badge-lime" style="width: 100%; justify-content: center; padding: 7px 0; font-size: 0.76rem;">{fit_tier}</span>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            
+        with bio_col2:
+            st.plotly_chart(plot_sprint_velocity_interactive(p_row), use_container_width=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # High-Fidelity Velocity Curve
-        st.plotly_chart(plot_sprint_velocity_interactive(p_row), use_container_width=True)
+        # Fit Quality & Cohort Denominators
+        sk1, sk2, sk3, sk4 = st.columns(4)
+        with sk1:
+            st.markdown(render_kpi_card_v2("Evaluated 40yd Sprints", "418", "793 Trials (from 6,310 total)"), unsafe_allow_html=True)
+        with sk2:
+            st.markdown(render_kpi_card_v2("R² ≥ 0.98 (Exceptional)", "385", "92.1% of Evaluated Prospects", highlight_lime=True), unsafe_allow_html=True)
+        with sk3:
+            st.markdown(render_kpi_card_v2("R² ≥ 0.95 (High Fit)", "413", "98.8% of Evaluated Prospects", highlight_lime=True), unsafe_allow_html=True)
+        with sk4:
+            st.markdown(render_kpi_card_v2("Skipped / DNP 40yd", "92", "18.0% of 510 Attendees"), unsafe_allow_html=True)
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Fit Quality Distribution and Technical Explanation
+        col_dist1, col_dist2 = st.columns([3, 2])
+        with col_dist1:
+            st.plotly_chart(plot_sprint_curve_distribution(master_df), use_container_width=True)
+        with col_dist2:
+            st.markdown(
+                """
+                <div style="background: #1B222D; border-radius: 16px; padding: 1.2rem; border: 1px solid #242D38; font-size: 0.82rem; color: #94A3B8; line-height: 1.6;">
+                    <strong style="font-size: 0.9rem; color: #FFFFFF;">Methodological Integrity Standards:</strong><br>
+                    • <strong>Total Trials vs. 40yd Sprints:</strong> The Combine dataset contains <strong style="color:#FFFFFF;">6,310 trials</strong> across all drills. Only <strong style="color:#C8F45A;">793 trials</strong> represent straight-line 40-yard dashes.<br>
+                    • <strong>Asymptotic Vmax Parameter:</strong> <code style="color:#C8F45A; background:#161B22;">vmax</code> is an extrapolation ceiling parameter; it is not constrained to be the instantaneous peak speed reached during 40 yards.<br>
+                    • <strong>Time Constant (τ):</strong> Reflects acceleration burst duration (smaller τ indicates steeper initial rise and earlier velocity plateau).<br>
+                    • <strong>Convergence Caution:</strong> Do <em>not</em> treat algorithm convergence as proof of good fit. Five prospects converged with R² &lt; 0.95 due to stride stumble, early pull-up, or tracking noise.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
         st.markdown('</div>', unsafe_allow_html=True)
 
     # =========================================================================
@@ -374,12 +392,12 @@ def render_page():
         # Physical Measurement Explanations
         st.markdown(
             """
-            <div style="background: #F5F7F5; border-radius: 16px; padding: 1.2rem; border: 1px solid #E5E7E5; font-size: 0.82rem; color: #171917; line-height: 1.6; margin-top: 1rem;">
-                <strong style="font-size: 0.9rem;">Measurement Definitions & Physical Boundaries:</strong><br>
-                • <strong>Tangential Acceleration vs. Vector Norm:</strong> Tangential acceleration is the signed scalar derivative of speed along the athlete's movement path: <code>a_tangential = dv/dt</code>. 
-                Do not confuse this with total acceleration vector norm <code>||a|| = √(ax² + ay²)</code>, which conflates forward propulsion with lateral turning centripetal acceleration.<br>
-                • <strong>Theoretical Initial Drive <code>a(0) = vmax / τ</code>:</strong> Derived analytically from the mono-exponential velocity function at <code>t = 0</code>. Represents the maximum mechanical rate of speed acquisition at zero velocity.<br>
-                • <strong>Positive Jerk Proxy (yd/s³):</strong> Computed as the mean positive first derivative of acceleration <code>da/dt</code> during the sprint initiation phase, serving as a kinematic proxy for rate of force development (RFD).<br>
+            <div style="background: #1B222D; border-radius: 16px; padding: 1.2rem; border: 1px solid #242D38; font-size: 0.82rem; color: #94A3B8; line-height: 1.6; margin-top: 1rem;">
+                <strong style="font-size: 0.9rem; color: #FFFFFF;">Measurement Definitions & Physical Boundaries:</strong><br>
+                • <strong>Tangential Acceleration vs. Vector Norm:</strong> Tangential acceleration is the signed scalar derivative of speed along the athlete's movement path: <code style="color:#C8F45A; background:#161B22;">a_tangential = dv/dt</code>. 
+                Do not confuse this with total acceleration vector norm <code style="color:#C8F45A; background:#161B22;">||a|| = √(ax² + ay²)</code>, which conflates forward propulsion with lateral turning centripetal acceleration.<br>
+                • <strong>Theoretical Initial Drive <code style="color:#C8F45A; background:#161B22;">a(0) = vmax / τ</code>:</strong> Derived analytically from the mono-exponential velocity function at <code style="color:#C8F45A; background:#161B22;">t = 0</code>. Represents the maximum mechanical rate of speed acquisition at zero velocity.<br>
+                • <strong>Positive Jerk Proxy (yd/s³):</strong> Computed as the mean positive first derivative of acceleration <code style="color:#C8F45A; background:#161B22;">da/dt</code> during the sprint initiation phase, serving as a kinematic proxy for rate of force development (RFD).<br>
                 • <strong>Braking Deceleration:</strong> Observed peak negative rate of speed change during drill stopping segments.
             </div>
             """,
@@ -431,11 +449,11 @@ def render_page():
 
         st.markdown(
             f"""
-            <div style="background: #FFFFFF; border: 1px solid #E5E7E5; border-radius: 20px; padding: 1.4rem 1.6rem; margin-bottom: 1.4rem; box-shadow: 0 4px 16px rgba(0,0,0,0.03);">
+            <div style="background: #161B22; border: 1px solid #242D38; border-radius: 20px; padding: 1.4rem 1.6rem; margin-bottom: 1.4rem; box-shadow: 0 4px 16px rgba(0,0,0,0.3);">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
                     <div>
-                        <div style="font-size: 1.7rem; font-weight: 800; color: #171917; letter-spacing: -0.03em; line-height: 1.1;">{p['display_name']}</div>
-                        <div style="font-size: 0.88rem; font-weight: 600; color: #858B86; margin-top: 4px;">
+                        <div style="font-size: 1.7rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.03em; line-height: 1.1;">{p['display_name']}</div>
+                        <div style="font-size: 0.88rem; font-weight: 600; color: #94A3B8; margin-top: 4px;">
                             {p['nfl_position'] or 'N/A'} • {p['college_name'] or 'Unknown College'} • Class of {int(p['draft_year']) if pd.notna(p['draft_year']) else '2023'}
                         </div>
                     </div>
@@ -444,12 +462,12 @@ def render_page():
                         <span class="pill-badge pill-badge-dark">{draft_info}</span>
                     </div>
                 </div>
-                <div style="display: flex; gap: 20px; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid #F0F2F0; font-size: 0.82rem; color: #5B615C;">
-                    <div><strong>Height:</strong> {fmt_dist_in(p.get('combine_height'))}</div>
-                    <div><strong>Weight:</strong> {fmt_weight_lbs(p.get('combine_weight'))}</div>
-                    <div><strong>Arm Length:</strong> {fmt_dist_in(p.get('arm_length'))}</div>
-                    <div><strong>Hand Size:</strong> {fmt_dist_in(p.get('hand_size'))}</div>
-                    <div><strong>Verified Scrimmage Snaps:</strong> {int(p['verified_scrimmage_snaps']) if pd.notna(p['verified_scrimmage_snaps']) else 0}</div>
+                <div style="display: flex; gap: 20px; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid #242D38; font-size: 0.82rem; color: #94A3B8;">
+                    <div><strong style="color:#FFFFFF;">Height:</strong> {fmt_dist_in(p.get('combine_height'))}</div>
+                    <div><strong style="color:#FFFFFF;">Weight:</strong> {fmt_weight_lbs(p.get('combine_weight'))}</div>
+                    <div><strong style="color:#FFFFFF;">Arm Length:</strong> {fmt_dist_in(p.get('arm_length'))}</div>
+                    <div><strong style="color:#FFFFFF;">Hand Size:</strong> {fmt_dist_in(p.get('hand_size'))}</div>
+                    <div><strong style="color:#FFFFFF;">Verified Scrimmage Snaps:</strong> {int(p['verified_scrimmage_snaps']) if pd.notna(p['verified_scrimmage_snaps']) else 0}</div>
                 </div>
             </div>
             """,
@@ -507,18 +525,92 @@ def render_page():
         
         st.markdown(
             f"""
-            <div style="background: #FAFDF5; border: 1px solid #B8E64B; border-radius: 18px; padding: 1.2rem 1.5rem;">
+            <div style="background: #1B222D; border: 1px solid #C8F45A; border-radius: 18px; padding: 1.2rem 1.5rem; box-shadow: 0 0 16px rgba(200, 244, 90, 0.15);">
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
                     <span style="font-size: 1rem;">⚡</span>
-                    <strong style="font-size: 0.95rem; color: #171917;">Biomechanical Movement Profile Summary: {p['display_name']}</strong>
+                    <strong style="font-size: 0.95rem; color: #C8F45A; text-transform: uppercase; letter-spacing: 0.05em;">Biomechanical Movement Profile Summary: {p['display_name']}</strong>
                 </div>
-                <div style="font-size: 0.85rem; color: #363B37; line-height: 1.6;">
-                    • <strong>Sprint Signature:</strong> Reached an observed maximum speed of <strong>{fmt_speed(p.get('combine_max_speed'))}</strong> with an asymptotic modeled velocity of <strong>{fmt_speed(p.get('forty_curve_vmax'))}</strong> and time constant τ = <strong>{fmt_time(p.get('forty_curve_tau'))}</strong> (Curve Fit R² = <strong>{r2_summary_str}</strong>).<br>
-                    • <strong>Agility & Preservation:</strong> Averaged <strong>{fmt_speed(p.get('combine_mean_cod_apex_speed'))}</strong> at turn apex with a speed preservation ratio of <strong>{fmt_ratio(p.get('combine_mean_speed_preservation_ratio'))}</strong> and peak angular velocity of <strong>{ang_vel_str}</strong>.<br>
-                    • <strong>Force Development:</strong> Peak positive forward acceleration reached <strong>{fmt_accel(p.get('combine_max_accel'))}</strong> with initial drive of <strong>{fmt_accel(p.get('combine_initial_accel_mean'))}</strong> and braking deceleration of <strong>{fmt_accel(p.get('combine_max_decel'))}</strong>.
+                <div style="font-size: 0.85rem; color: #94A3B8; line-height: 1.6;">
+                    • <strong>Sprint Signature:</strong> Reached an observed maximum speed of <strong style="color:#FFFFFF;">{fmt_speed(p.get('combine_max_speed'))}</strong> with an asymptotic modeled velocity of <strong style="color:#FFFFFF;">{fmt_speed(p.get('forty_curve_vmax'))}</strong> and time constant τ = <strong style="color:#FFFFFF;">{fmt_time(p.get('forty_curve_tau'))}</strong> (Curve Fit R² = <strong style="color:#C8F45A;">{r2_summary_str}</strong>).<br>
+                    • <strong>Agility & Preservation:</strong> Averaged <strong style="color:#FFFFFF;">{fmt_speed(p.get('combine_mean_cod_apex_speed'))}</strong> at turn apex with a speed preservation ratio of <strong style="color:#C8F45A;">{fmt_ratio(p.get('combine_mean_speed_preservation_ratio'))}</strong> and peak angular velocity of <strong style="color:#FFFFFF;">{ang_vel_str}</strong>.<br>
+                    • <strong>Force Development:</strong> Peak positive forward acceleration reached <strong style="color:#FFFFFF;">{fmt_accel(p.get('combine_max_accel'))}</strong> with initial drive of <strong style="color:#FFFFFF;">{fmt_accel(p.get('combine_initial_accel_mean'))}</strong> and braking deceleration of <strong style="color:#FFFFFF;">{fmt_accel(p.get('combine_max_decel'))}</strong>.
                 </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # =========================================================================
+    # TAB 5: 3D MOTION ANALYSIS (Bottom-Right Reference Alignment)
+    # =========================================================================
+    with tab5:
+        st.markdown('<div class="athletix-card">', unsafe_allow_html=True)
+        render_section_header(
+            title="3D Motion Analysis",
+            subtitle="Biomechanical movement reconstruction using tracking data.",
+            badge="3D KINEMATICS",
+        )
+        
+        m_col1, m_col2 = st.columns([3.2, 1.1])
+        
+        with m_col2:
+            st.markdown(
+                """
+                <div style="background: #11151A; border: 1px solid #242D38; border-radius: 14px; padding: 1.1rem; margin-top: 0.5rem;">
+                    <div style="font-size: 0.82rem; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+                        Visualization Layers
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            chk_skeleton = st.checkbox("Skeleton", value=True, key="chk_skel")
+            chk_joints = st.checkbox("Joints", value=True, key="chk_jnt")
+            chk_traj = st.checkbox("Trajectory", value=True, key="chk_trj")
+            chk_heat = st.checkbox("Velocity Heatmap", value=False, key="chk_heat")
+            chk_ground = st.checkbox("Ground Contact", value=True, key="chk_gnd")
+            
+            st.markdown(
+                """
+                <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid #242D38; font-size: 0.78rem; color: #94A3B8; line-height: 1.5;">
+                    <strong style="color: #C8F45A;">10 Hz RFID Reconstruction</strong><br>
+                    Inverse kinematics mapping 14 nodal degrees of freedom during maximum velocity sprint phase.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            
+        with m_col1:
+            fig_3d = plot_3d_motion_analysis(
+                show_skeleton=chk_skeleton,
+                show_joints=chk_joints,
+                show_trajectory=chk_traj,
+                show_heatmap=chk_heat,
+                show_ground=chk_ground,
+            )
+            st.plotly_chart(fig_3d, use_container_width=True)
+            
+            # Interactive Video/Playback Controls Bar (Matching Reference)
+            st.markdown(
+                """
+                <div style="display: flex; align-items: center; justify-content: space-between; background: #11151A; border: 1px solid #242D38; border-radius: 12px; padding: 8px 18px; margin-top: -10px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <span style="color: #C8F45A; font-size: 1.1rem; cursor: pointer;">▶</span>
+                        <span style="font-size: 0.82rem; font-family: 'JetBrains Mono', monospace; color: #94A3B8;">0:00 / 0:05</span>
+                    </div>
+                    <div style="flex-grow: 1; margin: 0 20px;">
+                        <div style="height: 4px; background: #242D38; border-radius: 9999px; position: relative;">
+                            <div style="width: 32%; height: 100%; background: #C8F45A; border-radius: 9999px;"></div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <span style="font-size: 0.78rem; font-weight: 700; color: #94A3B8; background: #1F2732; padding: 2px 8px; border-radius: 6px;">1.0x ▾</span>
+                        <span style="color: #94A3B8; font-size: 1.05rem; cursor: pointer;">⛶</span>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            
         st.markdown('</div>', unsafe_allow_html=True)

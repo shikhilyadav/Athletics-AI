@@ -49,7 +49,7 @@ def render_page():
         df = df.merge(game_sub, on="nfl_id", how="left")
 
     # Filter Bar Container
-    st.markdown('<div class="athletix-card" style="padding: 1.2rem 1.6rem;">', unsafe_allow_html=True)
+    st.markdown('<div class="dark-card" style="padding: 1.2rem 1.6rem;">', unsafe_allow_html=True)
     f_col1, f_col2, f_col3, f_col4 = st.columns(4)
     
     with f_col1:
@@ -93,8 +93,8 @@ def render_page():
 
     st.markdown(
         f"""
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-            <span style="font-size: 0.9rem; font-weight: 700; color: #171917;">PROSPECT ROSTER</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; margin-top: 1rem;">
+            <span style="font-size: 0.85rem; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.06em;">PROSPECT ROSTER</span>
             <span class="pill-badge pill-badge-lime">Showing {len(filtered_df)} of {len(df)} Prospects</span>
         </div>
         """,
@@ -147,8 +147,8 @@ def render_page():
 
     # Detailed Player Card Inspector
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="athletix-card">', unsafe_allow_html=True)
-    st.markdown("### 📋 Prospect Biomechanical & Performance Dossier")
+    st.markdown('<div class="dark-card">', unsafe_allow_html=True)
+    st.markdown("<h3 style='color: #FFFFFF; font-weight: 800; font-size: 1.3rem; margin-bottom: 1.2rem;'>📋 Prospect Biomechanical & Performance Dossier</h3>", unsafe_allow_html=True)
 
     if filtered_df.empty:
         st.info("No prospects match the filter criteria.")
@@ -165,21 +165,21 @@ def render_page():
     # Player Header Dossier
     dossier_col1, dossier_col2, dossier_col3 = st.columns([2, 2, 2])
     with dossier_col1:
-        st.markdown(f"## **{p['display_name']}**")
-        st.markdown(f"**Position:** {p['nfl_position']} (Combine: {p['combine_position']})")
+        st.markdown(f"<h2 style='color: #FFFFFF; font-weight: 900; margin: 0 0 6px 0;'>{p['display_name']}</h2>", unsafe_allow_html=True)
+        st.markdown(f"**Position:** <span style='color: #C8F45A; font-weight: 700;'>{p['nfl_position']}</span> (Combine: {p['combine_position']})", unsafe_allow_html=True)
         st.markdown(f"**College:** {p['college_name']} ({p.get('college_conference', 'N/A')})")
         pick_str = f"Round {int(p['draft_round'])}, Pick #{int(p['draft_overall_pick'])}" if pd.notna(p['draft_round']) else "Undrafted Free Agent (UDFA)"
         st.markdown(f"**Draft Selection:** {pick_str}")
         
     with dossier_col2:
-        st.markdown("#### Physical Measurements")
+        st.markdown("<h4 style='color: #FFFFFF;'>Physical Measurements</h4>", unsafe_allow_html=True)
         st.markdown(f"**Height:** {p['combine_height']} inches")
         st.markdown(f"**Weight:** {fmt_weight_lbs(p['combine_weight'])}")
         st.markdown(f"**Arm Length:** {fmt_dist_in(p['arm_length'])}")
         st.markdown(f"**Hand Size:** {fmt_dist_in(p['hand_size'])}")
 
     with dossier_col3:
-        st.markdown("#### NFL Tracking & Opportunity")
+        st.markdown("<h4 style='color: #FFFFFF;'>NFL Tracking & Opportunity</h4>", unsafe_allow_html=True)
         snap_val = int(p['verified_scrimmage_snaps']) if pd.notna(p['verified_scrimmage_snaps']) else 0
         st.markdown(f"**Career Scrimmage Snaps (23–25):** {snap_val:,} snaps")
         if pd.notna(p.get("active_movement_frames")):
@@ -187,8 +187,7 @@ def render_page():
         st.markdown(f"**Primary Cohort Status:** {'✅ Eligible (≥50 Snaps)' if p['is_eligible_50_snaps'] else '❌ Ineligible (<50 Snaps)'}")
         if pd.notna(p.get("athletic_alpha_raw")):
             alpha_val = p["athletic_alpha_raw"]
-            alpha_color = "#171917" if alpha_val >= 0 else "#D32F2F"
-            st.markdown(f"**Athletic Alpha:** <span style='font-size:1.25rem; font-weight:800; color:{alpha_color}; background:#C8F45A; padding:2px 8px; border-radius:6px;'>{alpha_val:+.2f} yd/s</span>", unsafe_allow_html=True)
+            st.markdown(f"**Athletic Alpha:** <span style='font-size:1.15rem; font-weight:800; color:#0B0E11; background:#C8F45A; padding:2px 8px; border-radius:6px;'>{alpha_val:+.2f} yd/s</span>", unsafe_allow_html=True)
             st.caption(f"Tier: {p.get('athletic_alpha_tier', 'N/A')}")
         else:
             st.markdown("**Athletic Alpha:** *Unavailable (Outside Primary Cohort)*")
@@ -198,7 +197,7 @@ def render_page():
     pillar1, pillar2, pillar3 = st.columns(3)
 
     with pillar1:
-        st.markdown("##### 1. Traditional Combine Drills")
+        st.markdown("<h5 style='color: #C8F45A;'>1. Traditional Combine Drills</h5>", unsafe_allow_html=True)
         st.markdown(f"- **40-Yard Dash:** {fmt_time(p['forty'])}")
         st.markdown(f"- **10-Yard Split:** {fmt_time(p['ten_yd_split'])}")
         st.markdown(f"- **Vertical Jump:** {fmt_dist_in(p['vertical'])}")
@@ -208,7 +207,7 @@ def render_page():
         st.markdown(f"- **Bench Press:** {int(p['bench_reps']) if pd.notna(p['bench_reps']) else 'N/A'} reps")
 
     with pillar2:
-        st.markdown("##### 2. Sensor Kinematics & COD")
+        st.markdown("<h5 style='color: #C8F45A;'>2. Sensor Kinematics & COD</h5>", unsafe_allow_html=True)
         st.markdown(f"- **Max Sensor Speed:** {fmt_speed(p['combine_max_speed'])}")
         st.markdown(f"- **Mean Sensor Speed:** {fmt_speed(p['combine_mean_speed'])}")
         st.markdown(f"- **Max Acceleration:** {fmt_accel(p['combine_max_accel'])}")
@@ -218,7 +217,7 @@ def render_page():
         st.markdown(f"- **Peak Angular Velocity:** {p['combine_peak_angular_velocity']:.1f}°/s" if pd.notna(p['combine_peak_angular_velocity']) else "- **Peak Angular Velocity:** N/A")
 
     with pillar3:
-        st.markdown("##### 3. Regular-Season Tracking (2023)")
+        st.markdown("<h5 style='color: #C8F45A;'>3. Regular-Season Tracking (2023)</h5>", unsafe_allow_html=True)
         st.markdown(f"- **Game 95th Pct Speed:** {fmt_speed(p['game_speed_p95'])}")
         st.markdown(f"- **Game 99th Pct Speed:** {fmt_speed(p['game_speed_p99'])}")
         st.markdown(f"- **Game Max Speed:** {fmt_speed(p['game_speed_max'])}")
