@@ -121,12 +121,33 @@ def test_components_markup():
     assert "4.85" in metric_html
     assert "TOP 5%" in metric_html
 
-    from src.dashboard.components import render_segmented_bar, render_dark_ai_card
+    from src.dashboard.components import (
+        render_segmented_bar,
+        render_dark_ai_card,
+        render_model_architecture_card,
+        render_key_findings_card,
+    )
     bar_html = render_segmented_bar("Sprint Burst", 94, "lime", "Peak")
     assert "94%" in bar_html
 
     ai_html = render_dark_ai_card("Test Insight", "Test recommendation", ["Bullet 1"])
     assert "Test Insight" in ai_html
+
+    model_html = render_model_architecture_card()
+    assert "model-arch-card" in model_html
+    assert "Traditional (A)" in model_html
+    assert "Sensor Only (B)" in model_html
+    assert "Hybrid (C)" in model_html
+    assert "0.9381" in model_html
+    assert "<pre>" not in model_html
+    assert "<code>" not in model_html
+
+    findings_html = render_key_findings_card()
+    assert "findings-card" in findings_html
+    assert "Traditional combine testing" in findings_html
+    assert "Multicollinearity prevents" in findings_html
+    assert "<pre>" not in findings_html
+    assert "<code>" not in findings_html
 
 
 def test_charts_generation():
@@ -182,6 +203,7 @@ def test_charts_generation():
         plot_acceleration_profile,
         plot_cod_interactive_scatter,
         plot_biomechanical_profile_radar,
+        plot_cod_velocity_transitions,
     )
     fig12 = plot_sprint_velocity_interactive(p1)
     assert fig12 is not None
@@ -194,6 +216,10 @@ def test_charts_generation():
 
     fig15 = plot_biomechanical_profile_radar(p1, master_df)
     assert fig15 is not None
+
+    p1_trials = cod_df[cod_df["nfl_id"] == int(p1["nfl_id"])]
+    fig15b = plot_cod_velocity_transitions(p1_trials, str(p1["display_name"]))
+    assert fig15b is not None
 
     from src.dashboard.charts import plot_hero_lime_trend, plot_recent_form_spline, plot_cohort_performance_trend, plot_3d_motion_analysis
     fig16 = plot_hero_lime_trend(master_df)

@@ -17,25 +17,29 @@ def inject_custom_css():
         /* Import Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono */
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-        /* Design System Variables */
+        /* Design System Variables - Design 2: Next-Gen Motion Intelligence */
         :root {
-            --bg-app: #0B0E11;
-            --bg-sidebar: #0B0E11;
-            --card-bg: #161B22;
-            --card-bg-elevated: #1B222D;
-            --card-border: #242D38;
-            --card-border-highlight: #C8F45A;
+            --bg-app: #080C14;
+            --bg-sidebar: #06090F;
+            --card-bg: #0F172A;
+            --card-bg-elevated: #131D31;
+            --card-border: #1E293B;
+            --card-border-highlight: #38BDF8;
+            --accent-blue: #38BDF8;
+            --accent-cyan: #22D3EE;
+            --accent-violet: #8B5CF6;
+            --accent-gradient: linear-gradient(135deg, #06B6D4 0%, #3B82F6 50%, #8B5CF6 100%);
+            --accent-cyan-dim: rgba(34, 211, 238, 0.15);
+            --accent-cyan-glow: rgba(34, 211, 238, 0.25);
+            --accent-blue-glow: rgba(56, 189, 248, 0.25);
             --accent-lime: #C8F45A;
-            --accent-lime-hover: #D6F972;
-            --accent-lime-dim: rgba(200, 244, 90, 0.15);
-            --accent-lime-glow: rgba(200, 244, 90, 0.25);
             --text-primary: #FFFFFF;
             --text-secondary: #94A3B8;
             --text-muted: #64748B;
             --card-radius: 18px;
             --pill-radius: 9999px;
-            --shadow-card: 0 8px 24px -2px rgba(0, 0, 0, 0.45);
-            --shadow-glow: 0 0 20px rgba(200, 244, 90, 0.20);
+            --shadow-card: 0 10px 25px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.22);
         }
 
         /* App Background & Base Typography */
@@ -71,7 +75,7 @@ def inject_custom_css():
             overflow: hidden !important;
         }
 
-        /* Sidebar Styling (Deep Charcoal Black) */
+        /* Sidebar Styling (Deep Navy & Graphite) */
         section[data-testid="stSidebar"] {
             background-color: var(--bg-sidebar) !important;
             border-right: 1px solid var(--card-border) !important;
@@ -101,16 +105,16 @@ def inject_custom_css():
         }
 
         div[data-testid="stRadio"] label:hover {
-            background-color: #141A22 !important;
+            background-color: #0F172A !important;
             color: #FFFFFF !important;
         }
 
         div[data-testid="stRadio"] label[data-checked="true"],
         div[data-testid="stRadio"] label:has(input:checked) {
-            background-color: var(--accent-lime) !important;
-            color: #0B0E11 !important;
+            background: linear-gradient(135deg, #06B6D4 0%, #2563EB 100%) !important;
+            color: #FFFFFF !important;
             font-weight: 800 !important;
-            box-shadow: 0 2px 14px rgba(200, 244, 90, 0.35) !important;
+            box-shadow: 0 4px 18px rgba(37, 99, 235, 0.45) !important;
         }
 
         /* Hide radio circle dots for modern pill button look */
@@ -130,7 +134,7 @@ def inject_custom_css():
         .search-box-container {
             display: flex;
             align-items: center;
-            background: #161B22;
+            background: #0F172A;
             border: 1px solid var(--card-border);
             border-radius: var(--pill-radius);
             padding: 8px 18px;
@@ -151,13 +155,13 @@ def inject_custom_css():
         }
 
         .search-kbd-badge {
-            background: #242D38;
+            background: #1E293B;
             color: var(--text-secondary);
             font-size: 0.72rem;
             font-weight: 700;
             padding: 2px 8px;
             border-radius: 6px;
-            border: 1px solid #333D4B;
+            border: 1px solid #334155;
         }
 
         .top-bar-controls {
@@ -170,7 +174,7 @@ def inject_custom_css():
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #161B22;
+            background: #0F172A;
             border: 1px solid var(--card-border);
             border-radius: var(--pill-radius);
             padding: 8px 16px;
@@ -183,7 +187,7 @@ def inject_custom_css():
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: #161B22;
+            background: #0F172A;
             border: 1px solid var(--card-border);
             display: flex;
             align-items: center;
@@ -199,9 +203,9 @@ def inject_custom_css():
             right: 9px;
             width: 7px;
             height: 7px;
-            background-color: var(--accent-lime);
+            background-color: var(--accent-cyan);
             border-radius: 50%;
-            box-shadow: 0 0 6px var(--accent-lime);
+            box-shadow: 0 0 8px var(--accent-cyan);
         }
 
         /* Card Containers */
@@ -216,8 +220,8 @@ def inject_custom_css():
         }
 
         .dark-card-highlight {
-            background: linear-gradient(135deg, rgba(200, 244, 90, 0.08) 0%, rgba(22, 27, 34, 0.95) 100%) !important;
-            border: 1px solid var(--accent-lime) !important;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
+            border: 1px solid var(--accent-cyan) !important;
             box-shadow: var(--shadow-glow) !important;
         }
 
@@ -254,21 +258,21 @@ def inject_custom_css():
         }
 
         .kpi-dark-card:hover {
-            border-color: #384556;
+            border-color: #38BDF8;
             transform: translateY(-2px);
         }
 
         .kpi-dark-card-active {
-            background: linear-gradient(135deg, rgba(200, 244, 90, 0.14) 0%, rgba(22, 27, 34, 0.95) 100%);
-            border: 1.5px solid var(--accent-lime);
-            box-shadow: 0 0 18px rgba(200, 244, 90, 0.20);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.16) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border: 1.5px solid var(--accent-cyan);
+            box-shadow: 0 0 22px rgba(34, 211, 238, 0.28);
         }
 
         .kpi-dark-icon-wrap {
             width: 42px;
             height: 42px;
             border-radius: 12px;
-            background: #1F2732;
+            background: #1E293B;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -277,9 +281,9 @@ def inject_custom_css():
             flex-shrink: 0;
         }
 
-        .kpi-dark-icon-wrap-lime {
-            background: var(--accent-lime);
-            color: #0B0E11;
+        .kpi-dark-icon-wrap-cyan, .kpi-dark-icon-wrap-lime {
+            background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%);
+            color: #FFFFFF;
         }
 
         .kpi-dark-num {
@@ -309,42 +313,79 @@ def inject_custom_css():
             letter-spacing: 0.02em;
         }
 
+        .pill-badge-cyan {
+            background-color: rgba(34, 211, 238, 0.16);
+            color: #22D3EE;
+            border: 1px solid rgba(34, 211, 238, 0.35);
+        }
+
+        .pill-badge-blue {
+            background-color: rgba(56, 189, 248, 0.16);
+            color: #38BDF8;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+        }
+
+        .pill-badge-violet {
+            background-color: rgba(139, 92, 246, 0.16);
+            color: #A78BFA;
+            border: 1px solid rgba(139, 92, 246, 0.35);
+        }
+
         .pill-badge-lime {
-            background-color: var(--accent-lime);
-            color: #0B0E11;
+            background-color: var(--accent-cyan);
+            color: #080C14;
         }
 
         .pill-badge-dark {
-            background-color: #1F2732;
+            background-color: #1E293B;
             color: #FFFFFF;
             border: 1px solid var(--card-border);
         }
 
         .pill-badge-grey {
-            background-color: #242D38;
+            background-color: #1E293B;
             color: var(--text-secondary);
         }
 
         /* Bottom Feature Cards with Background Graphics */
+        .hero-cta-motion {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 60%, #8B5CF6 100%);
+            color: #FFFFFF !important;
+            font-weight: 800;
+            font-size: 0.88rem;
+            padding: 10px 24px;
+            border-radius: var(--pill-radius);
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.40);
+            transition: all 0.2s ease;
+        }
+
+        .hero-cta-motion:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(56, 189, 248, 0.55);
+        }
+
         .hero-cta-lime {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--accent-lime);
-            color: #0B0E11 !important;
+            background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 60%, #8B5CF6 100%);
+            color: #FFFFFF !important;
             font-weight: 800;
             font-size: 0.88rem;
             padding: 10px 22px;
             border-radius: var(--pill-radius);
             text-decoration: none;
-            box-shadow: 0 4px 16px rgba(200, 244, 90, 0.35);
+            box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
             transition: all 0.2s ease;
         }
 
         .hero-cta-lime:hover {
-            background: var(--accent-lime-hover);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(200, 244, 90, 0.45);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.50);
         }
 
         .hero-cta-dark {
@@ -421,13 +462,13 @@ def inject_custom_css():
             color: #E2E8F0;
         }
 
-        /* Biomechanical Prospect Card Layout */
+        /* Biomechanical Prospect Card Layout (Design 2) */
         .bio-prospect-card {
-            background: #161B22;
-            border: 1px solid var(--card-border);
+            background: #0F172A;
+            border: 1px solid #1E293B;
             border-radius: 18px;
             padding: 1.3rem;
-            box-shadow: var(--shadow-card);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
         .bio-prospect-header {
@@ -436,20 +477,20 @@ def inject_custom_css():
             gap: 14px;
             margin-bottom: 1.1rem;
             padding-bottom: 0.9rem;
-            border-bottom: 1px solid #242D38;
+            border-bottom: 1px solid #1E293B;
         }
 
         .bio-avatar-circle {
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #242D38 0%, #161B22 100%);
-            border: 2px solid var(--accent-lime);
+            background: linear-gradient(135deg, #131D31 0%, #0F172A 100%);
+            border: 2px solid #22D3EE;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.4rem;
-            box-shadow: 0 0 12px rgba(200, 244, 90, 0.25);
+            box-shadow: 0 0 14px rgba(34, 211, 238, 0.35);
             flex-shrink: 0;
         }
 
@@ -462,7 +503,7 @@ def inject_custom_css():
 
         .bio-prospect-meta {
             font-size: 0.76rem;
-            color: var(--text-secondary);
+            color: #94A3B8;
             margin-top: 2px;
         }
 
@@ -471,7 +512,7 @@ def inject_custom_css():
             justify-content: space-between;
             align-items: center;
             padding: 7px 0;
-            border-bottom: 1px solid rgba(36, 45, 56, 0.6);
+            border-bottom: 1px solid rgba(30, 41, 59, 0.7);
             font-size: 0.82rem;
         }
 
@@ -480,7 +521,7 @@ def inject_custom_css():
         }
 
         .bio-kpi-label {
-            color: var(--text-secondary);
+            color: #94A3B8;
             font-weight: 500;
         }
 
@@ -663,6 +704,122 @@ def inject_custom_css():
             background: #161B22 !important;
             box-shadow: var(--shadow-card) !important;
         }
+
+        /* Model Architecture Comparison Card & Table (Design 2) */
+        .model-arch-card {
+            background: #0F172A;
+            border: 1px solid #1E293B;
+            border-radius: 18px;
+            padding: 1.4rem;
+            min-height: 335px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .model-arch-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1.1rem;
+        }
+
+        .model-arch-title {
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.02em;
+        }
+
+        .model-arch-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            font-size: 0.88rem;
+        }
+
+        .model-arch-th-left {
+            color: #8B949E;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            text-align: left;
+            padding: 0 10px 8px 10px;
+        }
+
+        .model-arch-th-right {
+            color: #8B949E;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            text-align: right;
+            padding: 0 10px 8px 10px;
+        }
+
+        .model-row-featured {
+            background: rgba(34, 211, 238, 0.16);
+            border: 1.5px solid #22D3EE;
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+
+        .model-row-normal {
+            background: rgba(255, 255, 255, 0.02);
+            color: #D1D5DB;
+        }
+
+        /* Key Research Findings Checklist Card (Design 2) */
+        .findings-card {
+            background: #0F172A;
+            border: 1px solid #1E293B;
+            border-radius: 18px;
+            padding: 1.4rem;
+            min-height: 335px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .findings-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1.2rem;
+        }
+
+        .findings-title {
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.02em;
+        }
+
+        .findings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            font-size: 0.88rem;
+            color: #D1D5DB;
+            line-height: 1.45;
+        }
+
+        .findings-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .findings-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 900;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -757,9 +914,9 @@ def render_card_header(title: str, subtitle: str = "", action_text: str = "Detai
 
 
 def render_kpi_card_v2(label: str, value: str, subtext: str = "", highlight_lime: bool = False):
-    """Render dark KPI card matching the 6-grid layout in the visual reference."""
+    """Render dark KPI card matching Design 2 Next-Gen Motion Intelligence without markdown code block triggering."""
     active_class = "kpi-dark-card-active" if highlight_lime else "kpi-dark-card"
-    icon_wrap_class = "kpi-dark-icon-wrap-lime" if highlight_lime else "kpi-dark-icon-wrap"
+    icon_wrap_class = "kpi-dark-icon-wrap-cyan" if highlight_lime else "kpi-dark-icon-wrap"
     
     icon_map = {
         "Combine Prospects": "👥",
@@ -768,18 +925,40 @@ def render_kpi_card_v2(label: str, value: str, subtext: str = "", highlight_lime
         "Route Separation": "🔬",
         "Drill Trials": "🏋️",
         "Tracking Frames": "💾",
+        "Evaluated 40yd Sprints": "⏱️",
+        "R² ≥ 0.98 (Exceptional)": "⭐",
+        "R² ≥ 0.95 (High Fit)": "🎯",
+        "Skipped / DNP 40yd": "⚠️",
+        "Mean Apex Speed": "⚡",
+        "Speed Preservation Ratio": "🔄",
+        "Speed Preservation": "🔄",
+        "Peak Angular Velocity": "📐",
+        "Tracked COD Trials": "📊",
+        "Turning Efficiency Index": "📈",
+        "Mean Peak Accel (a_max)": "🚀",
+        "Mean Peak Accel": "🚀",
+        "Initial Drive (a_init)": "⚡",
+        "Initial Drive": "⚡",
+        "Braking Deceleration": "🛑",
+        "Max Deceleration": "🛑",
+        "Mean Positive Jerk": "📈",
+        "Mean Pos Jerk": "📈",
     }
     icon = icon_map.get(label, "⚡")
+    val_color = '#22D3EE' if highlight_lime else '#FFFFFF'
+    sub_html = f'<div style="font-size: 0.70rem; color: #94A3B8; margin-top: 2px;">{subtext}</div>' if subtext else ''
     
-    return f"""
-    <div class="{active_class}">
-        <div class="{icon_wrap_class}">{icon}</div>
-        <div>
-            <div class="kpi-dark-num">{value}</div>
-            <div class="kpi-dark-label">{label}</div>
-        </div>
-    </div>
-    """
+    html = (
+        f'<div class="{active_class}">'
+        f'<div class="{icon_wrap_class}">{icon}</div>'
+        '<div>'
+        f'<div class="kpi-dark-num" style="color: {val_color};">{value}</div>'
+        f'<div class="kpi-dark-label">{label}</div>'
+        f'{sub_html}'
+        '</div>'
+        '</div>'
+    )
+    return html
 
 
 def render_kpi_card(label: str, value: str, subtext: str = "", highlight_lime: bool = False):
@@ -787,82 +966,87 @@ def render_kpi_card(label: str, value: str, subtext: str = "", highlight_lime: b
     return render_kpi_card_v2(label, value, subtext, highlight_lime)
 
 
-def render_metric_card(title: str, value: str, unit: str = "", badge_text: str = "", badge_color: str = "lime", subtext: str = ""):
-    """Render compact metric card in dark styling."""
-    badge_bg = "var(--accent-lime)" if badge_color == "lime" else "#1F2732"
-    badge_txt = "#0B0E11" if badge_color == "lime" else "#FFFFFF"
-    badge_html = f'<span style="background:{badge_bg}; color:{badge_txt}; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:9999px;">{badge_text}</span>' if badge_text else ''
-    subtext_html = f'<div style="font-size:0.74rem; color:#8B949E; margin-top:4px;">{subtext}</div>' if subtext else ''
+def render_metric_card(title: str, value: str, unit: str = "", badge_text: str = "", badge_color: str = "cyan", subtext: str = ""):
+    """Render compact metric card in Design 2 dark styling without markdown indentation issues."""
+    color_map = {
+        "cyan": ("rgba(34, 211, 238, 0.16)", "#22D3EE", "#22D3EE"),
+        "blue": ("rgba(56, 189, 248, 0.16)", "#38BDF8", "#38BDF8"),
+        "violet": ("rgba(167, 139, 250, 0.16)", "#A78BFA", "#A78BFA"),
+        "lime": ("rgba(34, 211, 238, 0.16)", "#22D3EE", "#22D3EE"),
+        "dark": ("#1E293B", "#94A3B8", "#334155"),
+        "grey": ("#131D31", "#94A3B8", "#1E293B"),
+        "red": ("rgba(239, 68, 68, 0.16)", "#EF4444", "#EF4444"),
+    }
+    bg, fg, border = color_map.get(badge_color, ("#1E293B", "#94A3B8", "#334155"))
+    badge_html = f'<span style="background:{bg}; color:{fg}; border:1px solid {border}; font-size:0.68rem; font-weight:800; padding:2px 8px; border-radius:9999px;">{badge_text}</span>' if badge_text else ''
+    unit_html = f'<span style="font-size:0.80rem; font-weight:600; color:#94A3B8; margin-left:4px;">{unit}</span>' if unit else ''
+    subtext_html = f'<div style="font-size:0.74rem; color:#94A3B8; margin-top:4px;">{subtext}</div>' if subtext else ''
     
-    return f"""
-    <div style="background:#161B22; border:1px solid #242D38; border-radius:14px; padding:0.95rem 1.15rem; box-shadow:0 4px 14px rgba(0,0,0,0.3);">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
-            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#94A3B8;">{title}</span>
-            {badge_html}
-        </div>
-        <div style="display:flex; align-items:baseline;">
-            <span style="font-size:1.55rem; font-weight:800; color:#FFFFFF; letter-spacing:-0.03em;">{value}</span>
-            {f'<span style="font-size:0.80rem; font-weight:600; color:#94A3B8; margin-left:4px;">{unit}</span>' if unit else ''}
-        </div>
-        {subtext_html}
-    </div>
-    """
+    html = (
+        '<div style="background:#0F172A; border:1px solid #1E293B; border-radius:14px; padding:0.95rem 1.15rem; box-shadow:0 4px 14px rgba(0,0,0,0.3);">'
+        '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">'
+        f'<span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#94A3B8;">{title}</span>'
+        f'{badge_html}'
+        '</div>'
+        '<div style="display:flex; align-items:baseline;">'
+        f'<span style="font-size:1.55rem; font-weight:800; color:#FFFFFF; letter-spacing:-0.03em;">{value}</span>'
+        f'{unit_html}'
+        '</div>'
+        f'{subtext_html}'
+        '</div>'
+    )
+    return html
 
 
 def render_scientific_banner(title: str, text: str):
-    """Render scientific boundary card with neon lime accent bar in dark styling."""
-    st.markdown(
-        f"""
-        <div class="scientific-banner">
-            <div style="font-weight: 800; font-size: 0.90rem; text-transform: uppercase; letter-spacing: 0.05em; color: #C8F45A; margin-bottom: 4px;">
-                🔬 {title}
-            </div>
-            <div style="color: #D1D5DB; font-size: 0.88rem; line-height: 1.55;">
-                {text}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    """Render scientific boundary card with Design 2 cyan accent bar without markdown indentation issues."""
+    html = (
+        '<div style="background: #0F172A; border-left: 4px solid #22D3EE; border-top: 1px solid #1E293B; border-right: 1px solid #1E293B; border-bottom: 1px solid #1E293B; border-radius: 0 14px 14px 0; padding: 1.1rem 1.4rem; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">'
+        '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">'
+        '<span style="font-size: 1.1rem; color: #22D3EE;">🛡️</span>'
+        f'<strong style="font-size: 0.92rem; color: #FFFFFF; letter-spacing: -0.01em;">{title}</strong>'
+        '</div>'
+        f'<div style="font-size: 0.84rem; color: #94A3B8; line-height: 1.6;">{text}</div>'
+        '</div>'
     )
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def render_feature_card(title: str, subtitle: str, icon: str, badge: str = "", bg_image_url: str = ""):
-    """Render bottom feature card matching Visual Reference 4 with photo background and circular arrow."""
-    badge_html = f'<span style="background:rgba(200,244,90,0.18); color:#C8F45A; border:1px solid rgba(200,244,90,0.35); font-size:0.68rem; font-weight:700; padding:2px 8px; border-radius:9999px;">{badge}</span>' if badge else ''
+    """Render bottom feature card matching Design 2 with photo background and circular arrow."""
+    badge_html = f'<span style="background:rgba(34,211,238,0.18); color:#22D3EE; border:1px solid #22D3EE; font-size:0.68rem; font-weight:700; padding:2px 8px; border-radius:9999px;">{badge}</span>' if badge else ''
+    bg_style = f"background-image: linear-gradient(180deg, rgba(15,23,42,0.7) 0%, rgba(8,12,20,0.95) 100%), url('{bg_image_url}');" if bg_image_url else "background: #0F172A;"
     
-    bg_style = f"background-image: linear-gradient(180deg, rgba(22,27,34,0.7) 0%, rgba(22,27,34,0.95) 100%), url('{bg_image_url}');" if bg_image_url else "background: #161B22;"
-    
-    return f"""
-    <div class="feature-hero-card" style="{bg_style}">
-        <div class="feature-card-content">
-            <div class="feature-card-icon-pill">{icon}</div>
-            <div class="feature-card-title-row">
-                <span class="feature-card-title">{title}</span>
-                {badge_html}
-            </div>
-            <div class="feature-card-desc">{subtitle}</div>
-        </div>
-        <div class="feature-card-arrow-btn">➔</div>
-    </div>
-    """
+    html = (
+        f'<div class="feature-hero-card" style="{bg_style}">'
+        '<div class="feature-card-content">'
+        f'<div class="feature-card-icon-pill">{icon}</div>'
+        '<div class="feature-card-title-row">'
+        f'<span class="feature-card-title">{title}</span>'
+        f'{badge_html}'
+        '</div>'
+        f'<div class="feature-card-desc">{subtitle}</div>'
+        '</div>'
+        '<div class="feature-card-arrow-btn">➔</div>'
+        '</div>'
+    )
+    return html
 
 
 def render_section_header(title: str, subtitle: str = "", badge: str = ""):
-    """Render clean dark section header."""
-    badge_html = f'<span class="pill-badge pill-badge-lime">{badge}</span>' if badge else ''
+    """Render clean dark section header without markdown indentation issues."""
+    badge_html = f'<span class="pill-badge pill-badge-cyan">{badge}</span>' if badge else ''
     subtitle_html = f'<div style="font-size: 0.84rem; color: #94A3B8; margin-top: 2px;">{subtitle}</div>' if subtitle else ''
-    st.markdown(
-        f"""
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.6rem; margin-bottom: 1.0rem;">
-            <div>
-                <h2 style="font-size: 1.25rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em; margin: 0;">{title}</h2>
-                {subtitle_html}
-            </div>
-            {badge_html}
-        </div>
-        """,
-        unsafe_allow_html=True,
+    html = (
+        '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.2rem; margin-bottom: 1.0rem;">'
+        '<div>'
+        f'<h2 style="font-size: 1.25rem; font-weight: 800; color: #FFFFFF; letter-spacing: -0.02em; margin: 0;">{title}</h2>'
+        f'{subtitle_html}'
+        '</div>'
+        f'{badge_html}'
+        '</div>'
     )
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def render_status_indicator(status_text: str, is_active: bool = True, badge: str = "ONLINE"):
@@ -932,3 +1116,94 @@ def render_empty_state(title: str = "No Records Found", message: str = "Try adju
         """,
         unsafe_allow_html=True,
     )
+
+
+def render_model_architecture_card(models: Optional[List[Dict[str, Any]]] = None, note: str = "") -> str:
+    """Render the Model Architecture Comparison card without triggering markdown code block parsing."""
+    if models is None:
+        models = [
+            {"name": "Traditional (A)", "r2": "0.9381", "rmse": "0.3843", "is_featured": True},
+            {"name": "Sensor Only (B)", "r2": "0.9184", "rmse": "0.4411", "is_featured": False},
+            {"name": "Hybrid (C)", "r2": "0.9311", "rmse": "0.4053", "is_featured": False},
+        ]
+    if not note:
+        note = '<span style="color: #22D3EE; font-weight: 700;">Paired Test:</span> Model A vs Model C ΔRMSE = +0.0210 yd/s (t = -2.74, p = 0.0069).'
+
+    rows = []
+    for m in models:
+        if m.get("is_featured"):
+            row = (
+                '<tr class="model-row-featured">'
+                f'<td style="padding: 10px; border-top-left-radius: 12px; border-bottom-left-radius: 12px; color: #22D3EE; font-weight: 800;">{m["name"]}</td>'
+                f'<td style="text-align: right; padding: 10px; color: #22D3EE; font-weight: 800;">{m["r2"]}</td>'
+                f'<td style="text-align: right; padding: 10px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; color: #22D3EE; font-weight: 800;">{m["rmse"]}</td>'
+                '</tr>'
+            )
+        else:
+            row = (
+                '<tr class="model-row-normal">'
+                f'<td style="padding: 10px; border-top-left-radius: 12px; border-bottom-left-radius: 12px;">{m["name"]}</td>'
+                f'<td style="text-align: right; padding: 10px;">{m["r2"]}</td>'
+                f'<td style="text-align: right; padding: 10px; border-top-right-radius: 12px; border-bottom-right-radius: 12px;">{m["rmse"]}</td>'
+                '</tr>'
+            )
+        rows.append(row)
+    tbody = "".join(rows)
+
+    html = (
+        '<div class="model-arch-card">'
+        '<div>'
+        '<div class="model-arch-header">'
+        '<span style="font-size: 1.1rem; color: #8B5CF6;">📚</span>'
+        '<span class="model-arch-title">Model Architecture Comparison</span>'
+        '</div>'
+        '<table class="model-arch-table">'
+        '<thead>'
+        '<tr>'
+        '<th class="model-arch-th-left">Model</th>'
+        '<th class="model-arch-th-right">R² (OOF)</th>'
+        '<th class="model-arch-th-right">RMSE (yd/s)</th>'
+        '</tr>'
+        '</thead>'
+        f'<tbody>{tbody}</tbody>'
+        '</table>'
+        '</div>'
+        f'<div style="font-size: 0.74rem; color: #94A3B8; margin-top: 14px; line-height: 1.45;">{note}</div>'
+        '</div>'
+    )
+    return html
+
+
+def render_key_findings_card(findings: Optional[List[Tuple[str, str, str]]] = None) -> str:
+    """Render the Key Research Findings checklist card without triggering markdown code block parsing."""
+    if findings is None:
+        findings = [
+            ("✓", "#22D3EE", "Traditional combine testing remains the dominant baseline predictor."),
+            ("✓", "#38BDF8", "10 Hz sensor kinematics add non-linear agility & deceleration context."),
+            ("✓", "#8B5CF6", "Athletic Alpha isolates unmodeled regular-season speed translation."),
+            ("✓", "#22D3EE", "Multicollinearity prevents sensor features from displacing stopwatches."),
+        ]
+
+    items = []
+    for icon, bg, text in findings:
+        color = "#080C14" if bg != "#8B5CF6" else "#FFFFFF"
+        item = (
+            '<div class="findings-item">'
+            f'<span class="findings-check" style="background: {bg}; color: {color};">{icon}</span>'
+            f'<span>{text}</span>'
+            '</div>'
+        )
+        items.append(item)
+    items_body = "".join(items)
+
+    html = (
+        '<div class="findings-card">'
+        '<div class="findings-header">'
+        '<span style="font-size: 1.1rem; color: #22D3EE;">🎯</span>'
+        '<span class="findings-title">Key Research Findings</span>'
+        '</div>'
+        f'<div class="findings-list">{items_body}</div>'
+        '</div>'
+    )
+    return html
+

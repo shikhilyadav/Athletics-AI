@@ -146,3 +146,26 @@ python -m pytest tests/ -v
 ### Live Server Status:
 - Server: Active Streamlit Daemon running on `http://localhost:8501`.
 - Health check: Responsive, dark theme tokens rendered, zero Streamlit default light widget flashes.
+
+---
+
+## 5. Design 2: Next-Gen Motion Intelligence Visual Identity Update
+
+### Visual Direction Implemented:
+- **Palette**: Deep Navy (`#080C14`) & Graphite (`#0F172A`, `#131D31`) background with Electric Blue (`#38BDF8`), Cyan (`#22D3EE`), and Violet (`#8B5CF6`) accents.
+- **Hero Title**: `DECODING MOVEMENT.` / `PREDICTING NFL IMPACT.` in vibrant electric cyan and violet gradients with modern sports-tech typography.
+- **KPI Grid**: 6-grid responsive cards featuring verified project metrics (510 Combine Prospects, 156 In-Game Tracked with active glowing cyan pill, 149 Primary Scrimmage Cohort, 51 Route Separation, 6,310 Drill Trials, 3.66M Tracking Frames).
+- **Cohort Trend Spline**: Electric blue trend spline with glowing cyan area fill.
+- **Model Comparison**: Full architecture comparison table with traditional baseline (Model A: $R^2 = 0.9381$, $\text{RMSE} = 0.3843\text{ yd/s}$) highlighted in electric cyan, alongside Model B and Model C.
+- **Athletic Alpha Visualization**: Embedded horizontal diverging bar chart (`plot_athletic_alpha_overview`) with overperformers in cyan and underperformers in violet, paired with statistical dispersion metrics (Mean Alpha: $0.0000\text{ yd/s}$, $\sigma = 0.4851\text{ yd/s}$).
+- **Feature Exploration Cards**: Biomechanical Lab (Hero Experience), Player Comparison Studio (Signature Feature), and Predictive Model Lab.
+
+### Automated Testing & Verification:
+- **Test Suite**: `pytest tests/ -v` (12/12 passed, 100% success rate).
+- **Screenshot Verification**: Captured live render at `reports/screenshots/research_overview_nextgen.png` (1902x1104, 394 KB).
+- **Files Modified**:
+  1. `.streamlit/config.toml` (Theme tokens: `#38BDF8`, `#080C14`, `#0F172A`, `#FFFFFF`)
+  2. `src/dashboard/components.py` (Design 2 CSS custom properties, buttons, badges, top bar, active sidebar nav)
+  3. `src/dashboard/charts.py` (Deep navy/graphite layout theme, electric blue/cyan trend spline, horizontal Athletic Alpha bar chart)
+  4. `src/dashboard/views/overview.py` (Full Research Overview layout with hero banner, 6-KPI grid, spline, model table, findings, Athletic Alpha visualization, and feature cards)
+

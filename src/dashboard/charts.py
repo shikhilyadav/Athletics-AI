@@ -10,15 +10,18 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-# Design System Palette (Dark Sports Intelligence Theme)
-COLOR_LIME = "#C8F45A"         # Primary Electric Neon Lime
-COLOR_LIME_DARK = "#8CCB42"    # Secondary Forest Lime
-COLOR_BLACK = "#FFFFFF"        # Primary Light Text on Dark Surface
-COLOR_GREY = "#94A3B8"         # Secondary Slate Grey Text
-COLOR_LIGHT_GREY = "#242D38"   # Dark Container Border / Gridline
-COLOR_WHITE = "#FFFFFF"        # Pure White
-COLOR_DARK_SURFACE = "#161B22" # Dark Graphite Container
-COLOR_CRIMSON = "#EF4444"      # Red Alert Indicator
+# Design System Palette (Design 2: Next-Gen Motion Intelligence Theme)
+COLOR_CYAN = "#22D3EE"           # Primary Electric Cyan
+COLOR_ELECTRIC_BLUE = "#38BDF8"  # Secondary Electric Blue
+COLOR_VIOLET = "#8B5CF6"         # Tertiary Motion Violet
+COLOR_LIME = "#22D3EE"           # Mapped to Cyan for Next-Gen consistency
+COLOR_LIME_DARK = "#38BDF8"      # Mapped to Electric Blue
+COLOR_BLACK = "#FFFFFF"          # Primary Light Text on Dark Surface
+COLOR_GREY = "#94A3B8"           # Secondary Slate Grey Text
+COLOR_LIGHT_GREY = "#1E293B"     # Dark Container Border / Gridline
+COLOR_WHITE = "#FFFFFF"          # Pure White
+COLOR_DARK_SURFACE = "#0F172A"   # Deep Graphite Container
+COLOR_CRIMSON = "#EF4444"        # Red Alert Indicator
 
 THEME_LAYOUT = dict(
     paper_bgcolor="rgba(0,0,0,0)",
@@ -26,17 +29,17 @@ THEME_LAYOUT = dict(
     font=dict(family="Plus Jakarta Sans, Inter, sans-serif", color="#FFFFFF", size=12),
     margin=dict(l=45, r=30, t=50, b=45),
     xaxis=dict(
-        gridcolor="#242D38",
-        zerolinecolor="#242D38",
+        gridcolor="#1E293B",
+        zerolinecolor="#1E293B",
         showline=True,
-        linecolor="#242D38",
+        linecolor="#1E293B",
         tickfont=dict(size=11, color="#94A3B8"),
     ),
     yaxis=dict(
-        gridcolor="#242D38",
-        zerolinecolor="#242D38",
+        gridcolor="#1E293B",
+        zerolinecolor="#1E293B",
         showline=True,
-        linecolor="#242D38",
+        linecolor="#1E293B",
         tickfont=dict(size=11, color="#94A3B8"),
     ),
     legend=dict(
@@ -48,17 +51,17 @@ THEME_LAYOUT = dict(
         font=dict(size=11, color="#FFFFFF"),
     ),
     hoverlabel=dict(
-        bgcolor="#0B0E11",
+        bgcolor="#080C14",
         font_size=12,
         font_family="Plus Jakarta Sans, sans-serif",
         font_color="#FFFFFF",
-        bordercolor="#C8F45A",
+        bordercolor="#38BDF8",
     ),
 )
 
 
 def plot_cohort_performance_trend(nested_df: Optional[pd.DataFrame] = None, metric: str = "R²") -> go.Figure:
-    """Cohort Performance Trend glowing spline chart matching the visual reference image."""
+    """Cohort Performance Trend glowing spline chart matching Design 2 Next-Gen Motion Intelligence."""
     fig = go.Figure()
     
     # Model labels
@@ -76,13 +79,13 @@ def plot_cohort_performance_trend(nested_df: Optional[pd.DataFrame] = None, metr
             y=y_vals,
             mode="lines+markers",
             name=f"Performance ({metric})",
-            line=dict(shape="spline", color=COLOR_LIME, width=4.0),
+            line=dict(shape="spline", color="#38BDF8", width=4.0),
             fill="tozeroy",
-            fillcolor="rgba(200, 244, 90, 0.14)",
+            fillcolor="rgba(34, 211, 238, 0.16)",
             marker=dict(
                 size=12,
                 color="#FFFFFF",
-                line=dict(color=COLOR_LIME, width=3),
+                line=dict(color="#38BDF8", width=3),
             ),
             hovertemplate="<b>%{x}</b><br>" + metric + ": %{y:.4f}<extra></extra>",
         )
@@ -90,12 +93,12 @@ def plot_cohort_performance_trend(nested_df: Optional[pd.DataFrame] = None, metr
 
     layout = {**THEME_LAYOUT}
     layout["xaxis"] = dict(
-        gridcolor="#242D38",
+        gridcolor="#1E293B",
         showline=False,
         tickfont=dict(size=11, color="#94A3B8"),
     )
     layout["yaxis"] = dict(
-        gridcolor="#242D38",
+        gridcolor="#1E293B",
         range=y_range,
         showline=False,
         tickfont=dict(size=11, color="#94A3B8"),
@@ -107,6 +110,67 @@ def plot_cohort_performance_trend(nested_df: Optional[pd.DataFrame] = None, metr
         **layout,
         showlegend=False,
         height=240,
+    )
+    return fig
+
+
+def plot_athletic_alpha_overview(alpha_df: pd.DataFrame) -> go.Figure:
+    """
+    Design 2: Next-Gen Motion Intelligence visualization of Athletic Alpha translation.
+    Shows the distribution of residuals (observed NFL game speed minus Combine projected speed).
+    """
+    fig = go.Figure()
+    
+    # Sort and take top positive outliers (overperformers) and top negative (underperformers)
+    top_pos = alpha_df.sort_values(by="athletic_alpha_raw", ascending=False).head(5)
+    top_neg = alpha_df.sort_values(by="athletic_alpha_raw", ascending=True).head(5)
+    combined = pd.concat([top_pos, top_neg]).sort_values(by="athletic_alpha_raw", ascending=True)
+    
+    colors = [
+        "#8B5CF6" if val < 0 else "#22D3EE"
+        for val in combined["athletic_alpha_raw"]
+    ]
+    
+    fig.add_trace(
+        go.Bar(
+            y=[f"{row['display_name']} ({row['nfl_position']})" for _, row in combined.iterrows()],
+            x=combined["athletic_alpha_raw"],
+            orientation="h",
+            marker=dict(
+                color=colors,
+                line=dict(color="#FFFFFF", width=0.5),
+            ),
+            text=[f"{val:+.2f}" for val in combined["athletic_alpha_raw"]],
+            textposition="auto",
+            textfont=dict(size=10, weight="bold", color="#FFFFFF"),
+            hovertemplate="<b>%{y}</b><br>Athletic Alpha: %{x:+.2f} yd/s<br>Actual P95: %{customdata[0]:.2f} yd/s<br>Expected: %{customdata[1]:.2f} yd/s<extra></extra>",
+            customdata=combined[["actual_game_speed_p95", "expected_traditional_game_speed_p95"]].values,
+        )
+    )
+    
+    # Zero reference vertical line
+    fig.add_vline(x=0, line_width=1.5, line_color="#38BDF8", line_dash="dash")
+    
+    layout = {**THEME_LAYOUT}
+    layout["xaxis"] = dict(
+        title="Residual Delta (yd/s) [y - ŷ_ModelA]",
+        gridcolor="#1E293B",
+        showline=True,
+        linecolor="#1E293B",
+        tickfont=dict(size=10, color="#94A3B8"),
+        dtick=0.5,
+    )
+    layout["yaxis"] = dict(
+        gridcolor="#1E293B",
+        showline=False,
+        tickfont=dict(size=10, color="#FFFFFF"),
+    )
+    layout["margin"] = dict(l=110, r=20, t=10, b=40)
+    
+    fig.update_layout(
+        **layout,
+        showlegend=False,
+        height=260,
     )
     return fig
 
@@ -305,21 +369,24 @@ def plot_sprint_curve_distribution(master_df: pd.DataFrame) -> go.Figure:
     df["fit_category"] = pd.cut(df["forty_curve_r2"], bins=bins, labels=labels, right=False)
     counts = df["fit_category"].value_counts().reindex(labels).fillna(0)
     
-    colors = [COLOR_LIGHT_GREY, COLOR_GREY, COLOR_LIME_DARK, COLOR_LIME]
+    colors = ["#334155", "#64748B", "#38BDF8", "#22D3EE"]
     fig = go.Figure(
         go.Bar(
             x=counts.index,
             y=counts.values,
             marker_color=colors,
-            marker_line=dict(color=COLOR_BLACK, width=1.5),
+            marker_line=dict(color="#1E293B", width=1.5),
             text=counts.values,
             textposition="auto",
-            textfont=dict(family="Plus Jakarta Sans", weight="bold", color=COLOR_BLACK),
+            textfont=dict(family="Plus Jakarta Sans", weight="bold", color="#FFFFFF"),
         )
     )
+    layout = {**THEME_LAYOUT}
+    layout["xaxis"] = dict(gridcolor="#1E293B", linecolor="#1E293B", tickfont=dict(size=11, color="#94A3B8"))
+    layout["yaxis"] = dict(gridcolor="#1E293B", linecolor="#1E293B", tickfont=dict(size=11, color="#94A3B8"))
     fig.update_layout(
-        **THEME_LAYOUT,
-        title=dict(text="Sprint Velocity Curve Fit Quality (418 Evaluated Prospects)", font=dict(size=14, weight=700)),
+        **layout,
+        title=dict(text="Sprint Velocity Curve Fit Quality (418 Evaluated Prospects)", font=dict(size=14, weight=700, color="#FFFFFF")),
         xaxis_title="Model Fit Quality Tier",
         yaxis_title="Number of Evaluated Prospects",
     )
@@ -536,21 +603,33 @@ def plot_sprint_velocity_interactive(p_row: pd.Series) -> go.Figure:
                 y=v_sensor,
                 mode="lines+markers",
                 name="Observed (10 Hz)",
-                line=dict(color="#EAB308", width=1.5, dash="dot"),
-                marker=dict(size=4.5, color="#EAB308"),
+                line=dict(color="#FBBF24", width=1.5, dash="dot"),
+                marker=dict(size=4.5, color="#FBBF24"),
                 hovertemplate="Observed 10 Hz: %{x:.2f} s<br>Speed: %{y:.2f} yd/s<extra></extra>",
             )
         )
 
-        # Modeled Sprint Curve (Smooth Fitted)
+        # Modeled Sprint Curve (Smooth Fitted) - Design 2 Vibrant Cyan
         fig.add_trace(
             go.Scatter(
                 x=t_arr,
                 y=v_arr,
                 mode="lines",
-                name="Fitted",
-                line=dict(color="#C8F45A", width=3.2),
+                name="Fitted v(t) = vmax × (1 - exp(-t/τ))",
+                line=dict(color="#22D3EE", width=3.4),
                 hovertemplate="Fitted Model: %{x:.2f} s<br>Velocity: %{y:.2f} yd/s<extra></extra>",
+            )
+        )
+
+        # Asymptotic Vmax Ceiling line
+        fig.add_trace(
+            go.Scatter(
+                x=[0, max_t],
+                y=[vmax, vmax],
+                mode="lines",
+                name=f"Asymptotic Vmax ({vmax:.2f} yd/s)",
+                line=dict(color="#A78BFA", width=1.8, dash="dash"),
+                hovertemplate=f"Asymptotic Ceiling Vmax: {vmax:.2f} yd/s (Model Parameter)<extra></extra>",
             )
         )
         
@@ -563,10 +642,10 @@ def plot_sprint_velocity_interactive(p_row: pd.Series) -> go.Figure:
                     y=[v_10],
                     mode="markers+text",
                     name=f"10-yd Split ({ten_split:.2f}s)",
-                    marker=dict(size=10, color="#C8F45A", line=dict(color="#0B0E11", width=2)),
+                    marker=dict(size=10, color="#38BDF8", line=dict(color="#080C14", width=2)),
                     text=[f"10yd: {v_10:.1f}"],
                     textposition="top left",
-                    textfont=dict(size=10, weight="bold", color="#C8F45A"),
+                    textfont=dict(size=10, weight="bold", color="#38BDF8"),
                     hovertemplate="10-Yard Split: %{x:.2f} s<br>Velocity: %{y:.2f} yd/s<extra></extra>",
                 )
             )
@@ -580,7 +659,7 @@ def plot_sprint_velocity_interactive(p_row: pd.Series) -> go.Figure:
                     y=[v_40],
                     mode="markers+text",
                     name=f"40-yd Finish ({forty_time:.2f}s)",
-                    marker=dict(size=10, color="#FFFFFF", line=dict(color="#C8F45A", width=2)),
+                    marker=dict(size=10, color="#FFFFFF", line=dict(color="#22D3EE", width=2)),
                     text=[f"40yd: {v_40:.1f}"],
                     textposition="bottom right",
                     textfont=dict(size=10, weight="bold", color="#FFFFFF"),
@@ -589,9 +668,9 @@ def plot_sprint_velocity_interactive(p_row: pd.Series) -> go.Figure:
             )
 
     layout_args = {**THEME_LAYOUT}
-    layout_args["legend"] = dict(orientation="h", y=1.05, xanchor="right", x=1.0, font=dict(color="#94A3B8", size=11))
-    layout_args["xaxis"] = {**layout_args.get("xaxis", {}), "title": "Time from Start (seconds)", "range": [0, 5.0], "dtick": 1.0, "gridcolor": "#242D38"}
-    layout_args["yaxis"] = {**layout_args.get("yaxis", {}), "title": "Velocity (yd/s)", "range": [0, 12.0], "dtick": 2.0, "gridcolor": "#242D38"}
+    layout_args["legend"] = dict(orientation="h", y=1.08, xanchor="right", x=1.0, font=dict(color="#94A3B8", size=11))
+    layout_args["xaxis"] = dict(gridcolor="#1E293B", linecolor="#1E293B", title="Time from Start (seconds)", range=[0, 5.0], dtick=1.0, tickfont=dict(color="#94A3B8", size=11))
+    layout_args["yaxis"] = dict(gridcolor="#1E293B", linecolor="#1E293B", title="Velocity (yd/s)", range=[0, 12.0], dtick=2.0, tickfont=dict(color="#94A3B8", size=11))
     fig.update_layout(
         **layout_args,
         title=dict(
@@ -628,10 +707,10 @@ def plot_acceleration_profile(p_row: pd.Series) -> go.Figure:
                 x=t_arr,
                 y=a_arr,
                 mode="lines",
-                name="Fitted Tangential Acceleration a(t)",
-                line=dict(color=COLOR_BLACK, width=3.5),
+                name="Fitted Tangential Accel a(t)",
+                line=dict(color="#38BDF8", width=3.5),
                 fill="tozeroy",
-                fillcolor="rgba(200, 244, 90, 0.20)",
+                fillcolor="rgba(34, 211, 238, 0.16)",
                 hovertemplate="Time: %{x:.2f} s<br>Acceleration: %{y:.2f} yd/s²<extra></extra>",
             )
         )
@@ -644,10 +723,10 @@ def plot_acceleration_profile(p_row: pd.Series) -> go.Figure:
                 y=[a_0],
                 mode="markers+text",
                 name=f"Theoretical Initial a(0)={a_0:.2f} yd/s²",
-                marker=dict(size=11, color=COLOR_LIME_DARK, line=dict(color=COLOR_BLACK, width=2)),
+                marker=dict(size=11, color="#22D3EE", line=dict(color="#080C14", width=2)),
                 text=[f"a(0): {a_0:.1f} yd/s²"],
                 textposition="top right",
-                textfont=dict(size=11, weight="bold", color=COLOR_BLACK),
+                textfont=dict(size=11, weight="bold", color="#22D3EE"),
             )
         )
 
@@ -656,11 +735,11 @@ def plot_acceleration_profile(p_row: pd.Series) -> go.Figure:
         fig.add_hline(
             y=obs_max_accel,
             line_dash="dot",
-            line_color=COLOR_LIME_DARK,
+            line_color="#A78BFA",
             line_width=2,
             annotation_text=f"Observed Sensor Max Accel = {obs_max_accel:.2f} yd/s²",
             annotation_position="bottom right",
-            annotation_font=dict(size=11, color=COLOR_BLACK),
+            annotation_font=dict(size=11, color="#A78BFA"),
         )
 
     # Observed Initial Acceleration
@@ -668,24 +747,102 @@ def plot_acceleration_profile(p_row: pd.Series) -> go.Figure:
         fig.add_hline(
             y=obs_init_accel,
             line_dash="dash",
-            line_color=COLOR_GREY,
+            line_color="#64748B",
             line_width=1.5,
             annotation_text=f"Observed 1st-Step Init Accel = {obs_init_accel:.2f} yd/s²",
             annotation_position="top right",
-            annotation_font=dict(size=11, color=COLOR_GREY),
+            annotation_font=dict(size=11, color="#94A3B8"),
         )
 
     layout_args = {**THEME_LAYOUT}
-    layout_args["legend"] = dict(orientation="h", y=-0.2, xanchor="center", x=0.5)
+    layout_args["legend"] = dict(orientation="h", y=-0.2, xanchor="center", x=0.5, font=dict(color="#94A3B8", size=11))
+    layout_args["xaxis"] = dict(gridcolor="#1E293B", linecolor="#1E293B", title="Elapsed Time from Sensor Start (seconds)", tickfont=dict(color="#94A3B8", size=11))
+    layout_args["yaxis"] = dict(gridcolor="#1E293B", linecolor="#1E293B", title="Tangential Acceleration (yd/s²)", tickfont=dict(color="#94A3B8", size=11))
     fig.update_layout(
         **layout_args,
         title=dict(
             text=f"Tangential Acceleration Profile: {p_name} ({p_pos})",
-            font=dict(size=15, weight=700),
+            font=dict(size=15, weight=700, color="#FFFFFF"),
         ),
-        xaxis_title="Elapsed Time from Sensor Start (seconds)",
-        yaxis_title="Tangential Acceleration (yd/s²)",
         showlegend=True,
+    )
+    return fig
+
+
+def plot_cod_velocity_transitions(trials_df: pd.DataFrame, prospect_name: str = "Selected Prospect") -> go.Figure:
+    """Interactive chart comparing entry speed, apex speed, and exit speed across verified COD trials."""
+    fig = go.Figure()
+    
+    valid_trials = trials_df.dropna(subset=["mean_entry_speed", "mean_apex_speed", "mean_exit_speed"]).copy()
+    if valid_trials.empty:
+        layout = {**THEME_LAYOUT}
+        fig.update_layout(
+            **layout,
+            title=dict(text=f"No Multi-Turn Speed Trials Available for {prospect_name}", font=dict(size=14, weight=700, color="#FFFFFF")),
+            height=340,
+        )
+        return fig
+    
+    trial_labels = [
+        f"{row['drill_name'].replace('_', ' ').title()[:18]} (Att {int(row['attempt']) if pd.notna(row['attempt']) else 1})"
+        for _, row in valid_trials.iterrows()
+    ]
+    
+    entry_speeds = valid_trials["mean_entry_speed"].tolist()
+    apex_speeds = valid_trials["mean_apex_speed"].tolist()
+    exit_speeds = valid_trials["mean_exit_speed"].tolist()
+    
+    fig.add_trace(
+        go.Bar(
+            name="Entry Speed",
+            x=trial_labels,
+            y=entry_speeds,
+            marker_color="#38BDF8",  # Electric Blue
+            marker_line=dict(color="#1E293B", width=1),
+            hovertemplate="<b>%{x}</b><br>Entry Speed: %{y:.2f} yd/s<extra></extra>",
+        )
+    )
+    fig.add_trace(
+        go.Bar(
+            name="Apex Speed (Curvature Min)",
+            x=trial_labels,
+            y=apex_speeds,
+            marker_color="#22D3EE",  # Vibrant Cyan
+            marker_line=dict(color="#1E293B", width=1),
+            hovertemplate="<b>%{x}</b><br>Apex Speed: %{y:.2f} yd/s<extra></extra>",
+        )
+    )
+    fig.add_trace(
+        go.Bar(
+            name="Exit Speed",
+            x=trial_labels,
+            y=exit_speeds,
+            marker_color="#A78BFA",  # Violet
+            marker_line=dict(color="#1E293B", width=1),
+            hovertemplate="<b>%{x}</b><br>Exit Speed: %{y:.2f} yd/s<extra></extra>",
+        )
+    )
+    
+    layout_trans = {**THEME_LAYOUT}
+    layout_trans["legend"] = dict(orientation="h", y=1.12, xanchor="right", x=1, font=dict(size=11, color="#FFFFFF"))
+    layout_trans["xaxis"] = dict(
+        gridcolor="#1E293B",
+        linecolor="#1E293B",
+        tickfont=dict(size=10, color="#94A3B8"),
+        tickangle=-15,
+    )
+    layout_trans["yaxis"] = dict(
+        gridcolor="#1E293B",
+        linecolor="#1E293B",
+        tickfont=dict(size=11, color="#94A3B8"),
+        title=dict(text="Velocity (yd/s)", font=dict(size=12, color="#94A3B8")),
+    )
+    
+    fig.update_layout(
+        **layout_trans,
+        title=dict(text=f"Turn Transition Dynamics (Entry vs. Apex vs. Exit): {prospect_name}", font=dict(size=14, weight=700, color="#FFFFFF")),
+        barmode="group",
+        height=360,
     )
     return fig
 
@@ -707,9 +864,9 @@ def plot_cod_interactive_scatter(cod_df: pd.DataFrame, highlight_nfl_id: Optiona
     sample_df = df.sample(n=min(len(df), 1500), random_state=42)
     
     color_map = {
-        "20-Yard Shuttle (180° Cuts)": COLOR_BLACK,
-        "3-Cone Drill (90° & 180° Cuts)": COLOR_LIME_DARK,
-        "Position Skill Drills (Curved / Cut)": COLOR_GREY,
+        "20-Yard Shuttle (180° Cuts)": "#38BDF8",     # Electric Blue
+        "3-Cone Drill (90° & 180° Cuts)": "#22D3EE",  # Vibrant Cyan
+        "Position Skill Drills (Curved / Cut)": "#A78BFA", # Violet
     }
     
     fig = px.scatter(
@@ -721,7 +878,7 @@ def plot_cod_interactive_scatter(cod_df: pd.DataFrame, highlight_nfl_id: Optiona
         opacity=0.75,
         hover_data=["drill_name", "num_detected_turns", "peak_angular_velocity_deg_s"],
     )
-    fig.update_traces(marker=dict(size=6, line=dict(width=0.8, color=COLOR_BLACK)))
+    fig.update_traces(marker=dict(size=6, line=dict(width=0.8, color="#080C14")))
     
     # If a specific player is selected, highlight their trials prominently
     if highlight_nfl_id is not None:
@@ -735,9 +892,9 @@ def plot_cod_interactive_scatter(cod_df: pd.DataFrame, highlight_nfl_id: Optiona
                     name="Selected Prospect Trials",
                     marker=dict(
                         size=14,
-                        color=COLOR_LIME,
-                        symbol="star",
-                        line=dict(color=COLOR_BLACK, width=2),
+                        color="#FFFFFF",
+                        symbol="diamond",
+                        line=dict(color="#22D3EE", width=2.5),
                     ),
                     text=p_cod["drill_name"],
                     hovertemplate="<b>Selected Prospect</b><br>Drill: %{text}<br>Apex Speed: %{x:.2f} yd/s<br>Speed Preservation: %{y:.3f}<extra></extra>",
@@ -745,12 +902,12 @@ def plot_cod_interactive_scatter(cod_df: pd.DataFrame, highlight_nfl_id: Optiona
             )
 
     layout_cod = {**THEME_LAYOUT}
-    layout_cod["legend"] = dict(orientation="h", y=-0.2, xanchor="center", x=0.5)
+    layout_cod["legend"] = dict(orientation="h", y=-0.2, xanchor="center", x=0.5, font=dict(color="#94A3B8", size=11))
+    layout_cod["xaxis"] = dict(gridcolor="#1E293B", linecolor="#1E293B", title="Turn Apex Velocity (yd/s)", tickfont=dict(color="#94A3B8", size=11))
+    layout_cod["yaxis"] = dict(gridcolor="#1E293B", linecolor="#1E293B", title="Kinematic Speed Preservation Ratio (vexit / ventry)", tickfont=dict(color="#94A3B8", size=11))
     fig.update_layout(
         **layout_cod,
-        title=dict(text="Change-of-Direction Dynamics: Apex Velocity vs. Speed Preservation Ratio", font=dict(size=14, weight=700)),
-        xaxis_title="Turn Apex Velocity (yd/s)",
-        yaxis_title="Kinematic Speed Preservation Ratio (vexit / ventry)",
+        title=dict(text="Change-of-Direction Dynamics: Apex Velocity vs. Speed Preservation Ratio", font=dict(size=14, weight=700, color="#FFFFFF")),
     )
     return fig
 
@@ -800,9 +957,9 @@ def plot_biomechanical_profile_radar(p_row: pd.Series, master_df: pd.DataFrame) 
             theta=categories_closed,
             fill="toself",
             name=f"{p_name} ({comp_label} Rank)",
-            line=dict(color=COLOR_BLACK, width=2.5),
-            fillcolor="rgba(200, 244, 90, 0.45)",
-            marker=dict(size=7, color=COLOR_LIME_DARK, line=dict(color=COLOR_BLACK, width=1.5)),
+            line=dict(color="#38BDF8", width=3),
+            fillcolor="rgba(34, 211, 238, 0.28)",
+            marker=dict(size=7, color="#22D3EE", line=dict(color="#FFFFFF", width=1.5)),
             hovertemplate="<b>%{theta}</b>: %{r:.1f}th Percentile<extra></extra>",
         )
     )
@@ -812,20 +969,20 @@ def plot_biomechanical_profile_radar(p_row: pd.Series, master_df: pd.DataFrame) 
             radialaxis=dict(
                 visible=True,
                 range=[0, 100],
-                tickfont=dict(size=9, color=COLOR_GREY),
-                gridcolor=COLOR_LIGHT_GREY,
+                tickfont=dict(size=9, color="#94A3B8"),
+                gridcolor="#1E293B",
             ),
             angularaxis=dict(
-                tickfont=dict(size=11, color=COLOR_BLACK, weight="bold"),
-                gridcolor=COLOR_LIGHT_GREY,
+                tickfont=dict(size=11, color="#FFFFFF", weight="bold"),
+                gridcolor="#1E293B",
             ),
             bgcolor="rgba(0,0,0,0)",
         ),
         paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(family="Plus Jakarta Sans, sans-serif"),
+        font=dict(family="Plus Jakarta Sans, sans-serif", color="#FFFFFF"),
         title=dict(
             text=f"Biomechanical Attribute Profile: {p_name} (vs. {comp_label})",
-            font=dict(size=14, weight=700),
+            font=dict(size=14, weight=700, color="#FFFFFF"),
         ),
         margin=dict(l=45, r=45, t=60, b=40),
         showlegend=False,
